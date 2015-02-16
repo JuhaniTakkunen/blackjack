@@ -1,0 +1,32 @@
+,2,3,4,5,6,7,8,9,10,A
+2 2,Split,Split,Split,Split,Split,Split,Hit,Hit,Hit,Hit
+3 3,Split,Split,Split,Split,Split,Split,Hit,Hit,Hit,Hit
+4 4,Hit,Hit,Hit,Split,Split,Hit,Hit,Hit,Hit,Hit
+5 5,Double,Double,Double,Double,Double,Double,Double,Double,Hit,Hit
+6 6,Hit,Hit,Hit,Hit,Hit,Hit,Hit,Hit,Hit,Hit
+7 7,Split,Split,Split,Split,Split,Split,Hit,Hit,Hit,Hit
+8 8,Split,Split,Split,Split,Split,Split,Split,Split,Split,Split
+9 9,Split,Split,Split,Split,Split,Stay,Split,Split,Stay,Stay
+10 10,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay
+J J,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay
+Q Q,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay
+K K,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay
+A A,Split,Split,Split,Split,Split,Split,Split,Split,Split,Split
+8 and under,Hit,Hit,Hit,Hit,Hit,Hit,Hit,Hit,Hit,Hit
+9,Hit,Double,Double,Double,Double,Hit,Hit,Hit,Hit,Hit
+10,Double,Double,Double,Double,Double,Double,Double,Double,Hit,Hit
+11,Double,Double,Double,Double,Double,Double,Double,Double,Double,Hit
+12,Hit,Hit,Stay,Stay,Stay,Hit,Hit,Hit,Hit,Hit
+13,Stay,Stay,Stay,Stay,Stay,Hit,Hit,Hit,Hit,Hit
+14,Stay,Stay,Stay,Stay,Stay,Hit,Hit,Hit,Hit,Hit
+15,Stay,Stay,Stay,Stay,Stay,Hit,Hit,Hit,Hit,Hit
+16,Stay,Stay,Stay,Stay,Stay,Hit,Hit,Hit,Hit,Hit
+17 and up,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay,Stay
+A 2,Hit,Hit,Hit,Double,Double,Hit,Hit,Hit,Hit,Hit
+A 3,Hit,Hit,Hit,Double,Double,Hit,Hit,Hit,Hit,Hit
+A 4,Hit,Hit,Double,Double,Double,Hit,Hit,Hit,Hit,Hit
+A 5,Hit,Hit,Double,Double,Double,Hit,Hit,Hit,Hit,Hit
+A 6,Hit,Double,Double,Double,Double,Hit,Hit,Hit,Hit,Hit
+A 7,Double,Double,Double,Double,Double,Stay,Stay,Hit,Hit,Hit
+A 8,Double,Double,Double,Double,Double,Stay,Stay,Stay,Stay,Stay
+A 9,Double,Double,Double,Double,Double,Stay,Stay,Stay,Stay,Stay
