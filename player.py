@@ -11,10 +11,6 @@ class Player():
         self.rounds = 0
         self.action = action
 
-    def new_round(self):
-        self.hands = {Hand(): False}
-        self.rounds += 1
-
         # Load rulebook on how to play each the BlackJack in each scenario
         import csv
         with open('Blackjack-chart.csv', 'rt', encoding="UTF-8") as csvfile:
@@ -27,6 +23,10 @@ class Player():
                     handrule[dealercard[i]] = row[i]
                 rulebook[row[0]] = handrule
         self.rulebook = rulebook
+
+    def new_round(self):
+        self.hands = {Hand(): False}
+        self.rounds += 1
 
     def discard(self, hand):
         del self.hands[hand]
