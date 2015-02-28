@@ -6,7 +6,7 @@ from tkinter import *
 
 class Blackjack():
 
-    def __init__(self, players, dealer, gui=False):
+    def __init__(self, players, dealer, gui=False, debugging=False, pcv=False, dcv=False):
         self.players = [Player(name) for name in players]
         self.dealer = Dealer(dealer)
         self.deck = Deck()
@@ -16,36 +16,59 @@ class Blackjack():
             self.gui = False  # TODO: GUI - graphics not working (28.2.2015 - JT)
         else:
             self.gui = False
+        self.pcv = pcv
+        self.dcv = dcv
+        self.debugging = debugging
 
     def start_game(self, number_of_rounds):
         # TODO: GUI - set table graphics
         for _ in range(0, number_of_rounds):
             self.start_round()
+        for player in self.players:
+            for hand in player.get_hands():
+                print(player.name, "käsi")
+                hand.show_cards()
+        print("JAKAJA")
+        self.dealer.get_hand().show_cards()
 
+        money = 0
         # Print results
         for player in self.players:
             player.show_money()
             # TODO: GUI - show money
+            money += player.get_money()
+        print("odds are for the house: ", (1000 - money/len(self.players))/number_of_rounds*100, "percent")
 
     def start_round(self):
         # Initialize players and (if needed) shuffle the deck
         if self.gui:
             self.frame = Frame(self.root)
 
-        for player in self.players:
-            player.new_round()
-        self.dealer.new_round()
 
-        if self.deck.cards_left() < 30:
+        if self.deck.cards_left() < 30 or self.debugging == True:
             self.deck.shuffled(self.number_of_decks)
             # TODO: GUI - Show this event (animation)
 
+        for player in self.players:
+            player.new_round(ratio=self.deck.ratio / self.deck.cards_left()*52)
+        self.dealer.new_round()
+
         # Deal two cards to each player and dealer.
         # TODO: cards are dealt in wrong order, but that doesn't change the odds.
-        for player in self.players * 2:
-            for hand in player.get_hands():
-                self.deck.deal(1, hand)
-        self.deck.deal(2, self.dealer.get_hand())
+
+        if self.debugging == False:
+            for player in self.players * 2:
+                for hand in player.get_hands():
+                    self.deck.deal(1, hand)
+            self.deck.deal(2, self.dealer.get_hand())
+        else:
+            # Deal two SPECIFIC cards to each player and the dealer - DEBUGGING
+            for player in self.players:
+                for hand in player.get_hands():
+                    self.deck.deal_value_card(self.pcv[0], hand)  # TODO: check that dealing is ok by odds
+                    self.deck.deal_value_card(self.pcv[1], hand)
+            self.deck.deal_value_card(self.dcv, self.dealer.get_hand())
+            self.deck.deal(1, self.dealer.get_hand())
 
         # Gameplay
         for player in self.players:
@@ -67,11 +90,12 @@ class Blackjack():
         while player.has_next_hand():  # A player is allowed to have multiple hands, especially with action == "Split".
             hand = player.next_hand()
             while True:
-                if self.gui:
+                if self.gui:  # TODO: GUI
                     self.frame.print_cards(turn="player")
 
                 # DECIDE PLAYER ACTION
                 if first_action is not None:  # Use the given action for first round and the playbook after that.
+                    # TODO: check, should breaks be removed
                     if first_action == "Double" and not hand.can_double():  # Illegal action.
                         player.set_money(None)
                         player.discard(hand)
@@ -158,7 +182,7 @@ class Blackjack():
 class Dealer():  # TODO: move this to other file
     def __init__(self, name):
         self.name = name
-        self.hand = []
+        self.hand = None
 
     def new_round(self):
         self.hand = Hand()

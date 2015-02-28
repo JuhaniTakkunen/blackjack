@@ -2,6 +2,7 @@ from blackjack import Blackjack
 from player import Player
 import time
 
+# NOTE! THIS IS OUTDATED, modifications have been done to blackjack.py (counting cards) - 28.2.2015 - JT
 
 class BlackjackOdds(Blackjack):
     def test_odds(self, number_of_rounds, player_card_values, dealer_card_value, fobj):
@@ -40,19 +41,3 @@ class BlackjackOdds(Blackjack):
 
         # End game
         self.decide_winner()
-
-# def Main():
-# Creates a file with all possible hands with odds by action
-players = ["Jenni", "Teemu", "Junnu", "Matti"]
-dealer = "Teemu"
-file_results = open("result.txt", "w")
-print("Player\t\t", "Dealer\t", "Stand\t", "Hit\t", "Double\t", "Split\t", file=file_results)
-game = BlackjackOdds(players, dealer)
-all_cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, "A"]
-for i in all_cards:
-    for j in all_cards:
-        for k in all_cards:
-            game.test_odds(1000, [k, j], i, file_results)
-    print(i, "done at", time.strftime("%H:%M:%S"))
-
-file_results.close()

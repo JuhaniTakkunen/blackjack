@@ -24,9 +24,13 @@ class Player():
                 rulebook[row[0]] = handrule
         self.rulebook = rulebook
 
-    def new_round(self):
+    def new_round(self, ratio = 1):
         self.hands = {Hand(): False}
         self.rounds += 1
+        if ratio > 2:
+            self.bet = ratio
+        else:
+            self.bet = 1
 
     def discard(self, hand):
         del self.hands[hand]

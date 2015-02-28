@@ -29,6 +29,7 @@ class Deck:
         self.ranks = list(range(2, 11))
         self.ranks.extend(['A', 'K', 'Q', 'J'])
         self.name = "Deck"
+        self.ratio = 0
 
     def cards_left(self):
         return len(self.cards)
@@ -39,6 +40,7 @@ class Deck:
             for card in list(itertools.product(self.ranks, self.suits)):
                 self.cards.append(Card(card[0], card[1]))
         shuffle(self.cards)
+        self.ratio = 0
 
     def show_cards(self):
         for card in self.cards:
@@ -46,6 +48,10 @@ class Deck:
 
     def deal(self, n, target):
         for card in self.cards[0:n]:
+            if card.value == 1 or card.value == 10:
+                self.ratio -= 1
+            elif 6 >= card.value >= 2:
+                self.ratio += 1
             target.add_card(card)
             self.cards.remove(card)
 
