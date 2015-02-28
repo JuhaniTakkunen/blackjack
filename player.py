@@ -31,7 +31,7 @@ class Player():
     def discard(self, hand):
         del self.hands[hand]
 
-    def show_money(self, arg):
+    def show_money(self, *arg):
         if arg == "action":
             print(self.action,  "has", self.money, "€ after", self.rounds, "rounds")
         else:
