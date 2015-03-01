@@ -6,7 +6,7 @@ from tkinter import *
 
 class Blackjack():
 
-    def __init__(self, players, dealer, gui=False, debugging=False, pcv=False, dcv=False):
+    def __init__(self, players, dealer, gui=False, counting = False):
         self.players = [Player(name) for name in players]
         self.dealer = Dealer(dealer)
         self.deck = Deck()
@@ -16,59 +16,39 @@ class Blackjack():
             self.gui = False  # TODO: GUI - graphics not working (28.2.2015 - JT)
         else:
             self.gui = False
-        self.pcv = pcv
-        self.dcv = dcv
-        self.debugging = debugging
+        self.counting = counting
 
     def start_game(self, number_of_rounds):
         # TODO: GUI - set table graphics
         for _ in range(0, number_of_rounds):
             self.start_round()
-        for player in self.players:
-            for hand in player.get_hands():
-                print(player.name, "käsi")
-                hand.show_cards()
-        print("JAKAJA")
-        self.dealer.get_hand().show_cards()
 
-        money = 0
         # Print results
+        print("---")
         for player in self.players:
-            player.show_money()
             # TODO: GUI - show money
-            money += player.get_money()
-        print("odds are for the house: ", (1000 - money/len(self.players))/number_of_rounds*100, "percent")
+            player.show_money()
+            print("odds are for the house: ", (1000 - player.get_money()/len(self.players))/number_of_rounds*100, "percent")
+            print("wins", player.win_count, "lost", player.lose_count, "tie", player.tie_count)
 
     def start_round(self):
         # Initialize players and (if needed) shuffle the deck
-        if self.gui:
+        if self.gui:  # TODO: GUI
             self.frame = Frame(self.root)
 
 
-        if self.deck.cards_left() < 30 or self.debugging == True:
-            self.deck.shuffled(self.number_of_decks)
+        if self.deck.cards_left() < 30:
+            self.deck.shuffle_all(self.number_of_decks)
             # TODO: GUI - Show this event (animation)
 
         for player in self.players:
-            player.new_round(ratio=self.deck.ratio / self.deck.cards_left()*52)
+            if self.counting:
+                player.new_round(self.deck.get_ratio())
+            else:
+                player.new_round()
         self.dealer.new_round()
 
-        # Deal two cards to each player and dealer.
-        # TODO: cards are dealt in wrong order, but that doesn't change the odds.
-
-        if self.debugging == False:
-            for player in self.players * 2:
-                for hand in player.get_hands():
-                    self.deck.deal(1, hand)
-            self.deck.deal(2, self.dealer.get_hand())
-        else:
-            # Deal two SPECIFIC cards to each player and the dealer - DEBUGGING
-            for player in self.players:
-                for hand in player.get_hands():
-                    self.deck.deal_value_card(self.pcv[0], hand)  # TODO: check that dealing is ok by odds
-                    self.deck.deal_value_card(self.pcv[1], hand)
-            self.deck.deal_value_card(self.dcv, self.dealer.get_hand())
-            self.deck.deal(1, self.dealer.get_hand())
+        self.deal_initial()
 
         # Gameplay
         for player in self.players:
@@ -77,6 +57,14 @@ class Blackjack():
 
         # End game
         self.decide_winner()
+
+    def deal_initial(self):
+            # Deal two cards to each player and dealer.
+            # TODO: cards are dealt in wrong order, but that doesn't change the odds.
+            for player in self.players * 2:
+                for hand in player.get_hands():
+                    self.deck.deal(1, hand)
+            self.deck.deal(2, self.dealer.get_hand())
 
     def player_turn(self, player, first_action=None):
         # http://www.wikihow.com/Sample/Blackjack-Rules
@@ -161,19 +149,19 @@ class Blackjack():
         for player in self.players:
             for hand in player.get_hands():
                 if hand.sum_of_cards() > 21:  # Hand over, player loses
-                    player.change_money(hand.lose())
+                    player.lose(hand)
+                elif dealer_hand.sum_of_cards() > 21:  # House over, player wins
+                    player.win(hand)
                 elif hand.is_blackjack() and not dealer_hand.is_blackjack():  # Player blackjack wins
-                        player.change_money(hand.win(1.5))
+                    player.win(hand)
                 elif dealer_hand.is_blackjack() and not hand.is_blackjack():  # House blackjack wins
-                        player.change_money(hand.lose())
-                elif hand.sum_of_cards() == dealer_hand.sum_of_cards():  # Tie
-                        player.change_money(hand.tie())
-                elif dealer_hand.sum_of_cards() > 21:  # House over
-                    player.change_money(hand.win())
+                    player.lose(hand)
+                elif hand.sum_of_cards() == dealer_hand.sum_of_cards():  # Tie, important that we check blackjacks first
+                    player.tie(hand)
                 elif hand.sum_of_cards() > dealer_hand.sum_of_cards():  # Hand wins
-                    player.change_money(hand.win())
+                    player.win(hand)
                 elif hand.sum_of_cards() < dealer_hand.sum_of_cards():  # House wins
-                    player.change_money(hand.lose())
+                    player.lose(hand)
                 else:
                     # One never is here, I hope
                     print("ERROR - unable to determine winner in: blackjack.py - decide_winner()")

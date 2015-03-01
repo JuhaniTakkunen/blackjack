@@ -1,7 +1,7 @@
 class Hand():
-    def __init__(self):
+    def __init__(self, bet=1):
         self.cards = []
-        self.bet = 1
+        self.bet = bet
         self.has_split = False
 
     def has_ace(self):
@@ -37,15 +37,6 @@ class Hand():
     def doublebet(self):
         self.bet = self.bet*2
         return self.bet
-
-    def win(self, x=1.0):
-        return self.bet*x
-
-    def lose(self):
-        return -self.bet
-
-    def tie(self):
-        return 0
 
     def is_blackjack(self):
         if (

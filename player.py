@@ -6,10 +6,16 @@ class Player():
     def __init__(self, name, action=None):
         self.name = name
         self.money = 1000
-        self.bet = 1
+        self.bet = 1  # TODO!! IMPORTANT! Not passed to Hand, especially when ratio increases (counting cards)
         self.hands = {}  # Hand(): Has hand ended (Stay / Over)
-        self.rounds = 0
         self.action = action
+
+        # counters
+        self.round_count = 0
+        self.win_count = 0
+        self.tie_count = 0
+        self.lose_count = 0
+        self.blackjack_count = 0
 
         # Load rulebook on how to play each the BlackJack in each scenario
         import csv
@@ -25,27 +31,38 @@ class Player():
         self.rulebook = rulebook
 
     def new_round(self, ratio = 1):
-        self.hands = {Hand(): False}
-        self.rounds += 1
+        self.round_count += 1
         if ratio > 2:
-            self.bet = ratio
+            self.bet = int(ratio)
         else:
             self.bet = 1
+        self.hands = {Hand(self.bet): False}
+
 
     def discard(self, hand):
         del self.hands[hand]
 
     def show_money(self, *arg):
         if arg == "action":
-            print(self.action,  "has", self.money, "€ after", self.rounds, "rounds")
+            print(self.action,  "has", self.money, "€ after", self.round_count, "rounds")
         else:
-            print(self.name,    "has", self.money, "€ after", self.rounds, "rounds")
+            print(self.name,    "has", self.money, "€ after", self.round_count, "rounds")
 
     def get_money(self):
         return self.money
 
-    def change_money(self, change):
-        self.money += change
+    def win(self, hand):
+        self.win_count += 1
+        if hand.is_blackjack():
+            self.blackjack_count += 1
+            self.money += hand.bet * 1.5
+        else:
+            self.money += hand.bet
+    def lose(self, hand):
+        self.lose_count += 1
+        self.money -= hand.bet
+    def tie(self, hand):
+        self.tie_count += 1
 
     def set_money(self, money):
         self.money = money

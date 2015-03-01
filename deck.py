@@ -29,18 +29,21 @@ class Deck:
         self.ranks = list(range(2, 11))
         self.ranks.extend(['A', 'K', 'Q', 'J'])
         self.name = "Deck"
-        self.ratio = 0
+        self.ratio_count = 0
 
     def cards_left(self):
         return len(self.cards)
 
-    def shuffled(self, n):
+    def shuffle_all(self, n):  # Old name: suffled
         self.cards = []
         for _ in itertools.repeat(None, n):
             for card in list(itertools.product(self.ranks, self.suits)):
                 self.cards.append(Card(card[0], card[1]))
-        shuffle(self.cards)
-        self.ratio = 0
+        shuffle(self.cards)  # Mersenne twister
+        self.ratio_count = 0
+
+    def shuffle_rest(self):
+        shuffle(self.cards)  # Mersenne twister
 
     def show_cards(self):
         for card in self.cards:
@@ -48,17 +51,29 @@ class Deck:
 
     def deal(self, n, target):
         for card in self.cards[0:n]:
+            # Update ratio for card counting
             if card.value == 1 or card.value == 10:
-                self.ratio -= 1
+                self.ratio_count -= 1
             elif 6 >= card.value >= 2:
-                self.ratio += 1
+                self.ratio_count += 1
+
             target.add_card(card)
             self.cards.remove(card)
 
     def deal_value_card(self, rank, target):
         for card in self.cards:
             if card.get_rank() == rank:
+                # Update ratio for card counting
+                if card.value == 1 or card.value == 10:
+                    self.ratio_count -= 1
+                elif 6 >= card.value >= 2:
+                    self.ratio_count += 1
+
                 target.add_card(card)
                 self.cards.remove(card)
                 return
+
         raise Exception("Card not found from deck")
+
+    def get_ratio(self):
+        return self.ratio_count / self.cards_left()*52
