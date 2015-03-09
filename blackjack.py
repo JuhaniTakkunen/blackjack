@@ -106,7 +106,7 @@ class Blackjack(object):
                             text += ", double"
                         if hand.can_split():
                             text += ", split"
-                        var = input(text+"]")
+                        var = input(text+"]: ")
                         if var == "Split" or var == "split":
                             if hand.can_split():
                                 action = "Split"

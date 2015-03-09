@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f7bda8d8-767b-4665-95c4-1dadedcffb1c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blackjack.py" afterPath="$PROJECT_DIR$/blackjack.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/player.py" afterPath="$PROJECT_DIR$/player.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="blackjack.iws" />
@@ -31,8 +30,8 @@
       <file leaf-file-name="blackjack.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blackjack.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5797101" vertical-offset="1619" max-vertical-offset="4573">
-              <caret line="107" column="39" selection-start-line="107" selection-start-column="39" selection-end-line="107" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.6289855" vertical-offset="1619" max-vertical-offset="4573">
+              <caret line="108" column="45" selection-start-line="108" selection-start-column="45" selection-end-line="108" selection-end-column="45" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -469,12 +468,18 @@
       <option name="project" value="LOCAL" />
       <updated>1425933430014</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="UI bugs updated">
+      <created>1425935856395</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1425935856395</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1378" height="744" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -483,7 +488,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32996634" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32755905" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32755905" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24596182" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -540,7 +545,8 @@
     <MESSAGE value="Odds are now functional, main program added, gui development started." />
     <MESSAGE value="minor fixes + testing started (-&gt; main has many exceptions)." />
     <MESSAGE value="UI updated, game modes updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="UI updated, game modes updated" />
+    <MESSAGE value="UI bugs updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="UI bugs updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -973,8 +979,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blackjack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5797101" vertical-offset="1619" max-vertical-offset="4573">
-          <caret line="107" column="39" selection-start-line="107" selection-start-column="39" selection-end-line="107" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.6289855" vertical-offset="1619" max-vertical-offset="4573">
+          <caret line="108" column="45" selection-start-line="108" selection-start-column="45" selection-end-line="108" selection-end-column="45" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
