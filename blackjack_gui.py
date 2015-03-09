@@ -1,5 +1,6 @@
 __author__ = 'Juhani Takkunen'
 from tkinter import *
+# NOT IN USE!!
 
 class start_gui():
     def __init__(self, root):

@@ -3,6 +3,7 @@ class Hand():
         self.cards = []
         self.bet = bet
         self.has_split = False
+        self.status = None
 
     def has_ace(self):
         for card in self.cards:
@@ -49,9 +50,15 @@ class Hand():
         else:
             return False
 
-    def show_cards(self):
-        for card in self.cards:
-            print(card.suit, card.rank)
+    def show_cards(self, n=''):
+        if n == 1:
+            print(self.cards[0].suit, self.cards[0].rank)
+        elif not n:
+            for card in self.cards:
+                print(card.suit, card.rank, end=", ")
+        else:
+            print("invalid n for show_cards")
+        print("")
 
     def sum_of_cards(self):
         points = 0

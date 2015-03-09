@@ -1,45 +1,42 @@
 from player import Player
 from deck import Deck
 from hand import Hand
-from tkinter import *
+# blackjack.py defines the rules of blackjack and how the game should be played. Blackjack rules have multiple
+# variations, and here we use the following rules:
+# - dealer hits on 16 stands on 17
+# - money returns to player in case of tie
+# - blackjack pays 3:2
+# - hand can be split only once
+# - double is not allowed for split hands
+# - double can be done, if first two cards have a value in range of 9-11 # TODO: check this
 
 
-class Blackjack():
+class Blackjack(object):
 
-    def __init__(self, players, dealer, gui=False, counting = False):
+    def __init__(self, players, dealer, counting=False, manual=False):
         self.players = [Player(name) for name in players]
         self.dealer = Dealer(dealer)
         self.deck = Deck()
         self.number_of_decks = 6  # Typical number of decks in casinos
         self.rounds = 0
-        if gui:
-            self.gui = False  # TODO: GUI - graphics not working (28.2.2015 - JT)
-        else:
-            self.gui = False
         self.counting = counting
+        self.manual = manual
 
-    def start_game(self, number_of_rounds):
-        # TODO: GUI - set table graphics
-        for _ in range(0, number_of_rounds):
-            self.start_round()
+    def start_game(self, number_of_rounds=0):
+        if self.manual:
+            continue_game = True
+            while continue_game:
+                continue_game = self.start_round()
+        else:
+            for _ in range(0, number_of_rounds):
+                self.start_round()
 
-        # Print results
-        print("---")
-        for player in self.players:
-            # TODO: GUI - show money
-            player.show_money()
-            print("odds are for the house: ", (1000 - player.get_money()/len(self.players))/number_of_rounds*100, "percent")
-            print("wins", player.win_count, "lost", player.lose_count, "tie", player.tie_count)
+        self.print_results()
 
     def start_round(self):
         # Initialize players and (if needed) shuffle the deck
-        if self.gui:  # TODO: GUI
-            self.frame = Frame(self.root)
-
-
         if self.deck.cards_left() < 30:
             self.deck.shuffle_all(self.number_of_decks)
-            # TODO: GUI - Show this event (animation)
 
         for player in self.players:
             if self.counting:
@@ -56,7 +53,18 @@ class Blackjack():
         self.dealer_turn()
 
         # End game
+        self.rounds += 1
         self.decide_winner()
+
+        if self.manual:
+            while True:
+                var = input("Do you want to continue? [y/n]")
+                if var == "y" or var == "Y":
+                    return True
+                elif var == "n" or var == "N":
+                    return False
+                else:
+                    print("Please answer y or n.")
 
     def deal_initial(self):
             # Deal two cards to each player and dealer.
@@ -75,22 +83,54 @@ class Blackjack():
         #   If action is illegal, player loses all money and discards hand!!! (needed for blackjack_odds)
         #   TODO: Try to make it so, that ACCIDENTAL illegal first_actions are handled
         # TODO: Error handling is very primitive
+        if self.manual:
+            print("\n ---- Player", player.name, "turn! ---- \n")
         while player.has_next_hand():  # A player is allowed to have multiple hands, especially with action == "Split".
             hand = player.next_hand()
             while True:
-                if self.gui:  # TODO: GUI
-                    self.frame.print_cards(turn="player")
-
-                # DECIDE PLAYER ACTION
-                if first_action is not None:  # Use the given action for first round and the playbook after that.
+                if hand.sum_of_cards() > 21:
+                    if self.manual:
+                        print(" ---- Player", player.name, "busted with", hand.sum_of_cards(), "points. ---- ")
+                    break
+                # 1. DECIDE PLAYER ACTION
+                if self.manual:
+                    while True:
+                        print("Player", player.name, hand.sum_of_cards(), "points: ")
+                        hand.show_cards()
+                        print("Dealer cards: ")
+                        self.dealer.hand.show_cards(1)
+                        var = input("Choose action [split/stay/hit/double]: ")
+                        if var == "Split" or var == "split":
+                            if hand.can_split():
+                                action = "Split"
+                                break
+                            else:
+                                print(" - sorry, split not allowed, choose another action.")
+                        elif var == "Stay" or var == "stay" or var == "Stand" or var == "stand":
+                            action = "Stay"
+                            break
+                        elif var == "Hit" or var == "hit":
+                            action = "Hit"
+                            break
+                        elif var == "Double" or var == "double":
+                            if hand.can_double():
+                                action = "Double"
+                                break
+                            else:
+                                print(" - sorry, double not allowed, choose another action.")
+                        else:
+                            print("- Invalid action, allowed actions are: split, stay, hit or double.")
+                elif first_action is not None:  # Use the given action for first round and the playbook after that.
                     # TODO: check, should breaks be removed
                     if first_action == "Double" and not hand.can_double():  # Illegal action.
                         player.set_money(None)
                         player.discard(hand)
+                        print("Player tried to do illegal split")
                         break
                     elif first_action == "Split" and not hand.can_split():  # Illegal action.
                         player.set_money(None)
                         player.discard(hand)
+                        print("Player tried to do illegal split")
                         break
                     else:
                         action = first_action
@@ -107,7 +147,7 @@ class Blackjack():
                         # print(hand.showcards())
                         break
 
-                # EXECUTE ACTION
+                # 2. EXECUTE ACTION
                 if action == "Stand" or action == "Stay":
                     break
                 elif action == "Hit":
@@ -133,24 +173,24 @@ class Blackjack():
 
     def dealer_turn(self):
         while True:
-            if self.gui:  # TODO: GUI
-                self.frame.print_cards(turn="dealer")
             action = self.dealer.move()
             if action == "Stand":
                 break
             elif action == "Hit":
-                self.deck.deal(1, self.dealer.get_hand())
+                self.deck.deal(1, self.dealer.hand)
 
     def decide_winner(self):
         # http://www.wikihow.com/Sample/Blackjack-Rules
-        if self.gui:  # TODO: GUI
-            self.frame.print_cards(turn="dealer")
-        dealer_hand = self.dealer.get_hand()
+        dealer_hand = self.dealer.hand
+        if self.manual:
+            print("Round ended")
+            print("Dealer hand", dealer_hand.sum_of_cards(), "points: ", end="")
+            dealer_hand.show_cards()
         for player in self.players:
             for hand in player.get_hands():
-                if hand.sum_of_cards() > 21:  # Hand over, player loses
+                if hand.sum_of_cards() > 21:
                     player.lose(hand)
-                elif dealer_hand.sum_of_cards() > 21:  # House over, player wins
+                elif dealer_hand.sum_of_cards() > 21:
                     player.win(hand)
                 elif hand.is_blackjack() and not dealer_hand.is_blackjack():  # Player blackjack wins
                     player.win(hand)
@@ -158,13 +198,40 @@ class Blackjack():
                     player.lose(hand)
                 elif hand.sum_of_cards() == dealer_hand.sum_of_cards():  # Tie, important that we check blackjacks first
                     player.tie(hand)
-                elif hand.sum_of_cards() > dealer_hand.sum_of_cards():  # Hand wins
+                elif hand.sum_of_cards() > dealer_hand.sum_of_cards():
                     player.win(hand)
-                elif hand.sum_of_cards() < dealer_hand.sum_of_cards():  # House wins
+                elif hand.sum_of_cards() < dealer_hand.sum_of_cards():
                     player.lose(hand)
                 else:
                     # One never is here, I hope
-                    print("ERROR - unable to determine winner in: blackjack.py - decide_winner()")
+                    print("ERROR - unable to determine winner in: blackjack.py - Blackjack.decide_winner()")
+                    print("Player", player.name, "cards: ")
+            if self.manual:
+                print("Player", player.name, hand.status, "with", hand.sum_of_cards(), "points: ", end="")
+                hand.show_cards()
+
+    def print_results(self):
+        print("")
+        print("--- *** RESULTS *** ---")
+        print("")
+        total_win_count, total_lose_count, total_tie_count, total_money_count = 0, 0, 0, 0
+
+        for player in self.players:
+            player.show_money()
+            odds = (1000 - player.get_money())/self.rounds*100
+            print("odds are for the house: ", odds, "percent")
+            print("wins", player.win_count, "lost", player.lose_count, "tie", player.tie_count)
+            print("")
+            total_win_count += player.win_count
+            total_lose_count += player.lose_count
+            total_tie_count += player.tie_count
+            total_money_count += player.get_money()
+
+        print("--- combined results ---")
+        odds = (1000*len(self.players) - total_money_count)/(self.rounds*len(self.players))*100
+        print("odds are for the house: ", odds, "percent")
+        print("wins", total_win_count, "lost", total_lose_count, "tie", total_tie_count)
+        print("")
 
 
 class Dealer():  # TODO: move this to other file
@@ -183,6 +250,3 @@ class Dealer():  # TODO: move this to other file
 
     def get_hand(self):
         return self.hand
-
-
-

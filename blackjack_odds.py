@@ -1,39 +1,56 @@
 from blackjack import Blackjack
-from player import Player
+import time
+
 
 class BlackjackOdds(Blackjack):
 
     def deal_initial(self):
-
-        player_card_values = [2,2]
-        dealer_card_value = "A"
-
         self.deck.shuffle_all(self.number_of_decks)  # every round is a "new" round
         for player in self.players:
             for hand in player.get_hands():
-                self.deck.deal_value_card(player_card_values[0], hand)  # TODO: check that dealing is ok by odds
-                self.deck.deal_value_card(player_card_values[1], hand)
-        self.deck.deal_value_card(dealer_card_value, self.dealer.get_hand())
+                self.deck.deal_value_card(self.player_card_1_value, hand)  # TODO: check that dealing is ok by odds
+                self.deck.deal_value_card(self.player_card_2_value, hand)
+        self.deck.deal_value_card(self.dealer_card_value, self.dealer.get_hand())
         self.deck.shuffle_rest()  # not sure if needed
         self.deck.deal(1, self.dealer.get_hand())  # cards are played in wrong order, but that doesnt change the odds
 
 
+class BlackjackOddsSpecific(BlackjackOdds):
 
-    # # OUTDATED STUFF
-    #
-    # def test_odds(self, number_of_rounds, player_card_values, dealer_card_value, *fobj):
-    #     actions = ["Stand", "Hit", "Double", "Split"]
-    #     names = ["Jenni", "Teemu", "Junnu", "Matti"]
-    #     self.players = [Player(name, action) for name, action in zip(names, actions)]
-    #     for _ in range(0, number_of_rounds):
-    #         self.start_odds_round(player_card_values, dealer_card_value)
-    #
-    #     if fobj:
-    #         print(player_card_values, "\t", end="\t", file=fobj)
-    #         print(dealer_card_value, end="\t", file=fobj)
-    #         for player in self.players:
-    #             print(player.get_money(), end="\t", file=fobj)
-    #         print("", file=fobj)
+    def __init__(self, player, dealer):
+        Blackjack.__init__(self, player, dealer)
+        self.player_card_1_value = input("Select player card 1 (A, 2-10, J, Q, K): ")
+        self.player_card_2_value = input("Select player card 2 (A, 2-10, J, Q, K): ")
+        self.dealer_card_value = input("Select dealer card 1 (A, 2-10, J, Q, K): ")
+
+
+class BlackjackOddsAll(Blackjack):
+
+    def __init__(self, file_object):
+        Blackjack.__init__(self, ["Hit", "Stand", "Split", "Double"], "Dealer")
+        self.file_object = file_object
+        self.player_card_1_value = ""
+        self.player_card_2_value = ""
+        self.dealer_card_value = ""
+
+    def start_game(self, number_of_rounds):
+        all_cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, "A"]
+        for self.player_card_1_value in all_cards:
+            for self.player_card_2_value in all_cards:
+                for self.dealer_card_value in all_cards:
+                    # TODO!! Initialize deck and players (money + counting)
+                    for _ in range(0, number_of_rounds):
+                        self.start_round()
+                    print(self.player_card_1_value, "done at", time.strftime("%H:%M:%S"))
+                    self.print_results_to_file()
+
+    def print_results_to_file(self):
+        print(self.player_card_1_value, self.player_card_2_value, "\t", end="\t", file=self.file_object)
+        print(self.dealer_card_value, end="\t", file=self.file_object)
+        for player in self.players:
+            print(player.get_money(), end="\t", file=self.file_object)
+        print("", file=self.file_object)
+
     #
     #     self.dealer.get_hand().show_cards()
     #     money = 0
@@ -74,3 +91,4 @@ class BlackjackOdds(Blackjack):
     #
     #     # End game
     #     self.decide_winner()
+

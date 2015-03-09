@@ -4,7 +4,7 @@ from random import shuffle
 
 class Card:
     def __init__(self, rank, suit):
-        self.rank = rank
+        self.rank = str(rank)
         self.suit = suit
 
         if rank in ['K', 'Q', 'J']:

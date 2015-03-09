@@ -58,11 +58,16 @@ class Player():
             self.money += hand.bet * 1.5
         else:
             self.money += hand.bet
+        hand.status = "win"
+
     def lose(self, hand):
         self.lose_count += 1
         self.money -= hand.bet
+        hand.status = "lose"
+
     def tie(self, hand):
         self.tie_count += 1
+        hand.status = "tie"
 
     def set_money(self, money):
         self.money = money
