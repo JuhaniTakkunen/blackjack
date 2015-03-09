@@ -55,7 +55,8 @@ class Player():
         self.win_count += 1
         if hand.is_blackjack():
             self.blackjack_count += 1
-            self.money += hand.bet * 1.5
+            hand.bet = hand.bet * 1.5
+            self.money += hand.bet
         else:
             self.money += hand.bet
         hand.status = "win"

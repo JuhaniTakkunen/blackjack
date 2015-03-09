@@ -93,13 +93,20 @@ class Blackjack(object):
                         print(" ---- Player", player.name, "busted with", hand.sum_of_cards(), "points. ---- ")
                     break
                 # 1. DECIDE PLAYER ACTION
-                if self.manual:
+                if len(hand.cards) == 1:  # Happens after split
+                    action = "Hit"
+                elif self.manual:
                     while True:
                         print("Player", player.name, hand.sum_of_cards(), "points: ")
                         hand.show_cards()
                         print("Dealer cards: ")
                         self.dealer.hand.show_cards(1)
-                        var = input("Choose action [split/stay/hit/double]: ")
+                        text = "Choose action [hit, stay"
+                        if hand.can_double():
+                            text += ", double"
+                        if hand.can_split():
+                            text += ", split"
+                        var = input(text+"]")
                         if var == "Split" or var == "split":
                             if hand.can_split():
                                 action = "Split"
@@ -165,6 +172,10 @@ class Blackjack(object):
                 elif action == "Double" and hand.can_double:
                     hand.doublebet()
                     self.deck.deal(1, hand)
+                    if self.manual:
+                        print("Player", player.name, "stays after double with", end="")
+                        hand.show_cards()
+                        print("\n")
                     break  # after Double player has to take one card and stay.
                 else:
                     # One should never find himself here
@@ -206,9 +217,9 @@ class Blackjack(object):
                     # One never is here, I hope
                     print("ERROR - unable to determine winner in: blackjack.py - Blackjack.decide_winner()")
                     print("Player", player.name, "cards: ")
-            if self.manual:
-                print("Player", player.name, hand.status, "with", hand.sum_of_cards(), "points: ", end="")
-                hand.show_cards()
+                if self.manual:
+                    print("Player", player.name, hand.status, hand.bet, "€ with", hand.sum_of_cards(), "points: ", end="")
+                    hand.show_cards()
 
     def print_results(self):
         print("")
