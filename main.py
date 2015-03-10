@@ -4,22 +4,17 @@ from blackjack_odds import BlackjackOddsAll
 
 
 # Methods
-def get_names():
+def get_names_ui():
     name = input("Please enter your name (enter blank for default players): ")
     if not name:  # default
         players = ["junnu", "jenni"]
-        dealer = "teemu"
-        print(" - Default selected, players: ", players, "and dealer: ", dealer, "\n")
+        print(" - Default selected, players: ", players, "\n")
     else:
         players = []
         while name and len(players) < 6:  # max players = 6
             players.append(name)
             name = input("Add more players (enter blank to finish): ")
-        dealer = input("Enter dealer name [default = teemu]: ")
-        if not dealer:
-            dealer = "teemu"
-            print(" - Default dealer selected:", dealer, "\n")
-    return players, dealer
+    return players
 
 
 def get_game_type():
@@ -29,7 +24,7 @@ def get_game_type():
             game_type = "normal"
             print(" - Default game type selected: ", game_type, "\n")
             break
-        elif game_type == "normal" or game_type == "specific card" or game_type == "test_all" or game_type == "auto pilot":
+        elif game_type == "normal" or game_type == "specific card" or game_type == "test all" or game_type == "auto pilot":
             break
         else:
             print(" - Unknown game type. Please use a proper game type.")
@@ -46,7 +41,6 @@ def get_rounds_count():
 
 # Main
 print("Welcome to the game of Blackjack!")
-players, dealer = get_names()
 game_type = get_game_type()
 
 if game_type != "normal":
@@ -58,16 +52,18 @@ if game_type != "normal":
             print("please give a proper integer")
 
 if game_type == "auto pilot":
-    game = Blackjack(players, dealer)
+    players = ["John", "Jenni"]
+    game = Blackjack(players)
     game.start_game(rounds_count)
 
 if game_type == "normal":
-    print("Manual game selected. Game starts...\n")
-    game = Blackjack(players, dealer, manual=True)
+    players = get_names_ui()
+    print("Manual game starts...\n")
+    game = Blackjack(players, manual=True)
     game.start_game()
 
 if game_type == "specific card":
-    game = BlackjackOddsSpecific(players, dealer)
+    game = BlackjackOddsSpecific(players)
     game.start_game(rounds_count)
 
 if game_type == "test all":
@@ -75,6 +71,7 @@ if game_type == "test all":
     file_results = open("result.txt", "w")
     print("Player\t\t", "Dealer\t", "Stand\t", "Hit\t", "Double\t", "Split\t", file=file_results)
 
-    game = BlackjackOddsAll(players, dealer)
+    game = BlackjackOddsAll(file_results)
+    game.start_game(rounds_count)
     file_results.close()
 

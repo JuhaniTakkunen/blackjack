@@ -1,9 +1,10 @@
 class Hand():
-    def __init__(self, bet=1):
+    def __init__(self, bet):
         self.cards = []
         self.bet = bet
         self.has_split = False
         self.status = None
+        self.first_action = None
 
     def has_ace(self):
         for card in self.cards:
@@ -26,7 +27,7 @@ class Hand():
 
     def split(self):
         if self.can_split():
-            new_hand = Hand()
+            new_hand = Hand(self.bet)
             new_hand.add_card(self.cards[1])
             self.remove_card(self.cards[1])
             self.has_split = True

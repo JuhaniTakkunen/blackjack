@@ -5,7 +5,7 @@ import time
 class BlackjackOdds(Blackjack):
 
     def deal_initial(self):
-        self.deck.shuffle_all(self.number_of_decks)  # every round is a "new" round
+        self.deck.shuffle_all(self.rules.number_of_decks)  # every round is a "new" round  TODO: this cancels card counting
         for player in self.players:
             for hand in player.get_hands():
                 self.deck.deal_value_card(self.player_card_1_value, hand)  # TODO: check that dealing is ok by odds
@@ -17,32 +17,47 @@ class BlackjackOdds(Blackjack):
 
 class BlackjackOddsSpecific(BlackjackOdds):
 
-    def __init__(self, player, dealer):
-        Blackjack.__init__(self, player, dealer)
+    def __init__(self, player):
+        Blackjack.__init__(self, player)
         self.player_card_1_value = input("Select player card 1 (A, 2-10, J, Q, K): ")
         self.player_card_2_value = input("Select player card 2 (A, 2-10, J, Q, K): ")
         self.dealer_card_value = input("Select dealer card 1 (A, 2-10, J, Q, K): ")
 
 
-class BlackjackOddsAll(Blackjack):
-
+class BlackjackOddsAll(BlackjackOdds):
+    # Odds if we have infinite decks
     def __init__(self, file_object):
-        Blackjack.__init__(self, ["Hit", "Stand", "Split", "Double"], "Dealer")
+        players = ["Stand", "Hit", "Double", "Split"]
+        Blackjack.__init__(self, players)
+        for player in self.players:
+            player.first_action = player.name
         self.file_object = file_object
         self.player_card_1_value = ""
         self.player_card_2_value = ""
         self.dealer_card_value = ""
+        self.start_money = 1000
+        self.rules.number_of_decks = 24  # we use 4 players who all might take 2, 2 -> lets make sure we dont run out of cards
 
     def start_game(self, number_of_rounds):
-        all_cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, "A"]
+        start_time = time.time()
+        all_cards = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "A"]
+        i = 0
         for self.player_card_1_value in all_cards:
+            i += 1
             for self.player_card_2_value in all_cards:
                 for self.dealer_card_value in all_cards:
-                    # TODO!! Initialize deck and players (money + counting)
+                    for player in self.players:
+                        player.set_money(self.start_money)
                     for _ in range(0, number_of_rounds):
                         self.start_round()
-                    print(self.player_card_1_value, "done at", time.strftime("%H:%M:%S"))
                     self.print_results_to_file()
+            elapsed_time = time.time() - start_time
+            done_str = "done at " + time.strftime("%H:%M:%S")
+            elap_str = "time elapsed: " + str("{0:.2f}".format(elapsed_time)) + "s"
+            est_str = "remaining: " + str("{0:.2f}".format(elapsed_time*len(all_cards) / i - elapsed_time)) + "s"
+            print(self.player_card_1_value, done_str, elap_str, est_str)
+        print("ALL DONE IN ", "{0:.2f}".format(time.time()-start_time), "seconds")
+
 
     def print_results_to_file(self):
         print(self.player_card_1_value, self.player_card_2_value, "\t", end="\t", file=self.file_object)
