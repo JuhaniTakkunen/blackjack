@@ -3,21 +3,21 @@ import time
 
 
 class BlackjackOdds(Blackjack):
-
     def deal_initial(self):
         self.deck.shuffle_all(self.rules.number_of_decks)  # every round is a "new" round  TODO: this cancels card counting
         for player in self.players:
             for hand in player.get_hands():
-                self.deck.deal_value_card(self.player_card_1_value, hand)  # TODO: check that dealing is ok by odds
-                self.deck.deal_value_card(self.player_card_2_value, hand)
+                self.deck.deal_value_card(self.player_card_1_value, hand, self.keep_in_deck)  # TODO: check that dealing is ok by odds
+                self.deck.deal_value_card(self.player_card_2_value, hand, self.keep_in_deck)
         self.deck.deal_value_card(self.dealer_card_value, self.dealer.get_hand())
-        self.deck.shuffle_rest()  # not sure if needed
+        self.deck.shuffle_rest()
         self.deck.deal(1, self.dealer.get_hand())  # cards are played in wrong order, but that doesnt change the odds
 
 
 class BlackjackOddsSpecific(BlackjackOdds):
 
     def __init__(self, player):
+        self.keep_in_deck = False
         Blackjack.__init__(self, player)
         self.player_card_1_value = input("Select player card 1 (A, 2-10, J, Q, K): ")
         self.player_card_2_value = input("Select player card 2 (A, 2-10, J, Q, K): ")
@@ -36,7 +36,8 @@ class BlackjackOddsAll(BlackjackOdds):
         self.player_card_2_value = ""
         self.dealer_card_value = ""
         self.start_money = 1000
-        self.rules.number_of_decks = 24  # we use 4 players who all might take 2, 2 -> lets make sure we dont run out of cards
+        self.rules.number_of_decks = 8
+        self.keep_in_deck = True
 
     def start_game(self, number_of_rounds):
         start_time = time.time()
@@ -50,7 +51,7 @@ class BlackjackOddsAll(BlackjackOdds):
                         player.set_money(self.start_money)
                     for _ in range(0, number_of_rounds):
                         self.start_round()
-                    self.print_results_to_file()
+                    self.print_results_to_file(number_of_rounds)
             elapsed_time = time.time() - start_time
             done_str = "done at " + time.strftime("%H:%M:%S")
             elap_str = "time elapsed: " + str("{0:.2f}".format(elapsed_time)) + "s"
@@ -58,12 +59,15 @@ class BlackjackOddsAll(BlackjackOdds):
             print(self.player_card_1_value, done_str, elap_str, est_str)
         print("ALL DONE IN ", "{0:.2f}".format(time.time()-start_time), "seconds")
 
-
-    def print_results_to_file(self):
+    def print_results_to_file(self, number_of_rounds):
         print(self.player_card_1_value, self.player_card_2_value, "\t", end="\t", file=self.file_object)
         print(self.dealer_card_value, end="\t", file=self.file_object)
         for player in self.players:
-            print(player.get_money(), end="\t", file=self.file_object)
+            try:
+                money = str("{:3.4f}".format((player.get_money()-self.start_money)/number_of_rounds))
+            except TypeError:
+                money = " None "
+            print(money, end="\t", file=self.file_object)
         print("", file=self.file_object)
 
     #

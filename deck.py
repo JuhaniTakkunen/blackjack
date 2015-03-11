@@ -60,7 +60,7 @@ class Deck:
             target.add_card(card)
             self.cards.remove(card)
 
-    def deal_value_card(self, rank, target):
+    def deal_value_card(self, rank, target, keep_in_deck=False):
         for card in self.cards:
             if card.get_rank() == rank:
                 # Update ratio for card counting
@@ -70,7 +70,8 @@ class Deck:
                     self.ratio_count += 1
 
                 target.add_card(card)
-                self.cards.remove(card)
+                if not keep_in_deck:
+                    self.cards.remove(card)
                 return
 
         raise Exception("Card not found from deck")
