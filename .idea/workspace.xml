@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f7bda8d8-767b-4665-95c4-1dadedcffb1c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/result_3333.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/result_copy.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blackjack_odds.py" afterPath="$PROJECT_DIR$/blackjack_odds.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/deck.py" afterPath="$PROJECT_DIR$/deck.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result.txt" afterPath="$PROJECT_DIR$/result.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="blackjack.iws" />
@@ -34,8 +29,8 @@
       <file leaf-file-name="blackjack.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blackjack.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.90340906" vertical-offset="1875" max-vertical-offset="2431">
-              <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.57954544" vertical-offset="1547" max-vertical-offset="2431">
+              <caret line="103" column="43" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="43" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -535,7 +530,13 @@
       <option name="project" value="LOCAL" />
       <updated>1426014554928</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Tested and run: test all&#10;- everything seems to be in order&#10;- minor enhancements for printing time while running test all">
+      <created>1426074187376</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1426074187376</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -608,7 +609,8 @@
     <MESSAGE value="UI updated, game modes updated" />
     <MESSAGE value="UI bugs updated" />
     <MESSAGE value="Major update.&#10;- Everything should work now - including &quot;test all&quot;.&#10;- Lots of changes have been made, and many old functions stopped working." />
-    <option name="LAST_COMMIT_MESSAGE" value="Major update.&#10;- Everything should work now - including &quot;test all&quot;.&#10;- Lots of changes have been made, and many old functions stopped working." />
+    <MESSAGE value="Tested and run: test all&#10;- everything seems to be in order&#10;- minor enhancements for printing time while running test all" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tested and run: test all&#10;- everything seems to be in order&#10;- minor enhancements for printing time while running test all" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1039,8 +1041,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blackjack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.90340906" vertical-offset="1875" max-vertical-offset="2431">
-          <caret line="129" column="0" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.57954544" vertical-offset="1547" max-vertical-offset="2431">
+          <caret line="103" column="43" selection-start-line="103" selection-start-column="43" selection-end-line="103" selection-end-column="43" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
