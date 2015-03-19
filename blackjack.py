@@ -1,22 +1,18 @@
 from player import Player
 from deck import Deck
 from hand import Hand
-from print_functions import *
+from print_functions import *  # imports print_ functions
 from dealer import Dealer
-from blackjack_ui import *
+from blackjack_ui import *  # imports ui_ functions
 from blackjack_rules import BlackjackRules
 
 
 class Blackjack(object):
-    # print_ functions are imported from print_functions.py
-    # ui_ functions are imported from blackjack_ui.py
-
-    def __init__(self, players, counting=False, manual=False):
+    def __init__(self, players, manual=False):
         self.players = [Player(name) for name in players]
         self.dealer = Dealer()
         self.deck = Deck()
         self.round_count = 0
-        self.counting = counting
         self.manual = manual
         self.rules = BlackjackRules()
 
@@ -34,14 +30,11 @@ class Blackjack(object):
     def start_round(self):
         # Shuffle the deck (if needed)
         if self.deck.cards_left() < self.rules.cards_left_min:
-            self.deck.shuffle_all(self.rules.number_of_decks)
+            self.deck.shuffle_new(self.rules.number_of_decks)
 
         # Initialize players, bets and the dealer
         for player in self.players:
-            if self.counting:
-                player.new_round(self.deck.get_ratio())
-            else:
-                player.new_round()
+            player.new_round(self.deck)
         self.dealer.new_round()
 
         # Play the game, deal the cards etc.
@@ -55,13 +48,12 @@ class Blackjack(object):
         self.rules.decide_winner(self)
 
         if self.manual:
-            print_round_ended(self)
-            print_player_round_stats(self)
             return ui_continue_game(self)
 
     def deal_initial(self):
             # Deal two cards to each player and dealer.
             # TODO: cards are dealt in wrong order, but that doesn't change the odds.
+            # (dealing should be player-player-dealer-player-player-dealer)
             for player in self.players * 2:
                 for hand in player.get_hands():
                     self.deck.deal(1, hand)
@@ -81,14 +73,16 @@ class Blackjack(object):
             hand = player.next_hand()
             while True:
                 # 0. CHECK IF BUSTED
-                if hand.sum_of_cards() > 21:
-                    if self.manual:
-                        print_busted(player, hand)
-                    break
+                if hand.sum_of_cards() >= 21:
+                    if self.manual and hand.sum_of_cards() > 21:
+                        print_busted(player, hand)  # TODO: what happens if 21?
+                    if not (hand.default_first_action is not None and len(hand.cards) == 2):  # TODO: handle this better
+                        break
 
                 # 1. GET ACTION
                 action = self.get_action(player, hand)
-                if not action:
+
+                if not action:  # illegal action done in get_action
                     break
 
                 # 2. EXECUTE ACTION
@@ -114,12 +108,11 @@ class Blackjack(object):
         elif self.manual:
             playbook_action = player.move(hand, self.dealer.hand)
             action = ui_player_action(player=player, hand=hand, game=self, default=playbook_action)
-        elif hand.first_action is not None:
+        elif hand.default_first_action is not None:
             # Use the given action for first round and the playbook after that.
-            action = hand.first_action
+            action = hand.default_first_action
             if self.rules.is_action_allowed(action=action, hand=hand):
-                action = hand.first_action
-                hand.first_action = None  # first action is only used for the very first  player action TODO: should first action be per hand or per round??!?
+                hand.default_first_action = None  # first action is only used for the very first  player action
             else:
                 player.set_money(None)
                 player.discard(hand)

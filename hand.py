@@ -1,10 +1,10 @@
 class Hand():
-    def __init__(self, bet):
+    def __init__(self, bet):  # TODO: bet=None would be better, but needs to be tested before implementing
         self.cards = []
         self.bet = bet
         self.has_split = False
         self.status = None
-        self.first_action = None
+        self.default_first_action = None
 
     def has_ace(self):
         for card in self.cards:
@@ -12,7 +12,7 @@ class Hand():
                 return True
         return False
 
-    def has_splitted(self):
+    def has_splitted(self):  # sic(typo)!
         if self.has_split:
             return True
         else:
@@ -61,22 +61,32 @@ class Hand():
             print("invalid n for show_cards")
         print("")
 
-    def sum_of_cards(self):
+    def sum_of_cards(self, as_text=False):
         points = 0
         aces_found = 0
+        prefix = "Hard"
         for card in self.cards:
             if card.rank in ["J", "Q", "K"]:
                 points += 10
             elif card.rank in ["A"]:
                 points += 11
-                aces_found += 1
+                if points > 21:
+                    points -= 10
+                    prefix = "Hard"
+                else:
+                    aces_found += 1
+                    prefix = "Soft"
             else:
                 points += int(card.rank)
 
             if points > 21 and aces_found > 0:
                 points -= 10
                 aces_found -= 1
-        return points
+                prefix = "Hard"
+        if as_text:
+            return prefix + " " + str(points)
+        else:
+            return points
 
     def discard_all(self):
         self.cards = []

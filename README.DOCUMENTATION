@@ -1,0 +1,114 @@
+Blackjack simulator/calculator - course
+
+Author: Juhani Takkunen
+E-mail: juhani.takkunen@helsinki.fi / juhani.takkunen@gmail.com
+University of Helsinki
+Department of Physics
+Course: "programming exercise in computational physics"
+- http://www.courses.physics.helsinki.fi/fys/laskfys/harjoitustyo.html
+
+Content of this file:
+    1. A description of the physics in the problem (with references)
+    2. The solution physics and/or algorithms
+    3. How the program works, subroutine structure
+    4. How to use the program
+    5. Input and output files (if appropriate)
+
+
+1. Blackjack - the game
+
+Blackjack is a card game played in casinos worldwide. Players play against the house and try to win money. Players are
+allowed to make decisions during the game changing the winning odds. House always has to make a move determined by the
+rules. The rules of the Blackjack game vary slightly between casinos changing the odds (slightly).
+
+NOTE: Using this program while playing in a casino is most likely illegal - this program is for research purpose only!
+
+1.1. Rules
+
+This Blackjack simulator uses the following rules:
+    - Game has 6 decks with 52 cards and no jokers.
+    - Aces can be 1 or 11, royals are 10 and all other cards have their own value
+    - Dealer hits on 16, stands on 17
+    - Player is allowed to double for 9-11
+    - money returns to player in case of tie
+    - blackjack pays 3:2 (unless it is a tie when money is returned)
+    - hand can be split only once after first two cards are dealt and they have the same value
+    - double is not allowed for split hands
+    - double can be done, if first two cards have a value in range of 9-11
+    - player is allowed, if he/she so chooses, hit on 21
+
+For example Casino Helsinki uses different rules (http://www.casinohelsinki.fi/pelit/poytapelit/black-jack) and
+therefore odds are comparable necessary between casinos.
+
+1.2. Odds
+
+Blackjack odds are based on the question: what is the change that the player/dealer gets certain cards and what will
+happen if the cards is dealt? The problem is that often there are tens of different possibilities what card is dealt and
+what can happen.
+
+Blackjack odds can be divided in the next topics:
+
+    - will the player go over + will the player get to a better position
+    - will the house go over
+    - will the house be in better position
+    - what if the player doubles or splits?
+
+1.2.1 Should I hit or stay
+
+When ever the player has 11 points or under he is going to improve his odds and get closer to 21 with no change of going
+over. If the player has over 11 points he/she has to consider the changes that he/she might go over 21 and lose hand.
+For example if the player has 13 points, he would go over with cards of values 9 or 10. Cards going over would then be:
+(9, 10, J, Q, K) and the odds for going over is therefore 5/13 (if we ignore the cards in play).
+
+On the other hand, not all cards improve player odds. If the player has 13 points and he gets a card between (A, 2, 3)
+he will stay under 17 points. Player could then continue hitting, but the risk of going over increases. Staying under 17
+points is not going to help the player, since the house is never going to stay under 17 and if the player stays on 16,
+the only way to win is by the house going over. Player only benefits from the cards (4, 5, 6, 7, 8) and therefore the
+odds are as follows:
+- 5/13 player lose
+- 3/13 no change in winning odds
+- 5/13 player increases odds for winning
+
+The last thing to consider is what position the house is in. If the house has a 10, there is a change of 8/13 that the
+house won't go over on the first round and stays between 17-21 (7, 8, 9, 10, J, Q, K, A) and even if the house gets a
+smaller card (eg. 10, 6) there is still a good change that he won't go over on the next card. Since it is unlikely for
+the house to go over, minor risks can be made to increase the player position. If the house has a smaller card (2-6) it
+is far more likely that the house will go over or stay on 17, and taking the risk for the player to go over is less
+beneficial.
+
+1.2.2 Should I split or double
+
+Splitting is allowed, when player has two cards with the same value. To split player has to double his bet and in result
+both the bet and the cards are split into to hands. If the player has eg. (7, 7) with 1 euro bet and the player pays 1
+euro to split, after splitting he has two hands with one card (7) and with a bet of 1 euro. Splitting should be done, if
+the player has advantage after splitting over the dealer. If the dealer has high odds to go over or stay at 17 (eg. 6)
+or the player can split a bad hand to two good hands (A, A), splitting can increase odds. Splitting a good hand (10, 10)
+against dealers good hand (10) can decrease odds.
+
+Doubling is more straight forward than splitting - doubling is allowed, when the player has certain points (9-11) with
+two cards. If it is likely that the dealer goes over or stays at 17, it is more likely that the player wins, and
+doubling can increase the expected return. After doubling player has to take one card and stay - making the odds
+calculation simpler than with splitting.
+
+1.2.3 Strategy charts
+
+To determine whether what action (Split, Stay, Hit or Double) to choose, there are charts which show what is the best
+action to maximize expected return. These can be deterministically calculated using statistics or by using a stochastic
+(Monte Carlo) simulation.
+
+When using a strategy chart such as: http://wizardofodds.com/games/blackjack/appendix/1/ the problem is that if the
+rules change even slightly, the chart might be false and all calculations have to be made again. Using a simulation is
+therefore more flexible, especially when counting cards.
+
+
+1.3. Counting
+
+Casinos always create the odds of blackjack so that statistically they win more than they lose. Counting cards can
+improve odds so that (depending on the rules and the method of counting) odds can turn for the player. Typically it is
+not allowed to use any kind of devices in casinos including pen and paper to count cards. Therefore counting systems
+are limited by the memory of the player(s).
+
+One of the most common and famous system for counting cards is...
+
+2. Blackjack odds by Monte Carlo
+

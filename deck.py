@@ -34,7 +34,7 @@ class Deck:
     def cards_left(self):
         return len(self.cards)
 
-    def shuffle_all(self, n):  # Old name: suffled
+    def shuffle_new(self, n):  # Old name: suffled, suffle_all
         self.cards = []
         for _ in itertools.repeat(None, n):
             for card in list(itertools.product(self.ranks, self.suits)):

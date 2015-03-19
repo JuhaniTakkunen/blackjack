@@ -6,17 +6,18 @@ class BlackjackRules():
     # - dealer hits on 16 stands on 17
     # - money returns to player in case of tie
     # - blackjack pays 3:2
-    # - hand can be split only once
+    # - hand can be split only once after first two cards are dealt and they have the same value
     # - double is not allowed for split hands
     # - double can be done, if first two cards have a value in range of 9-11 # TODO: check this
+    # - player if allowed, if he/she so chooses, hit on 21
     def __init__(self):
         self.number_of_decks = 6  # Typical number of decks in casinos
         self.cards_left_min = 30
-        self.dealer_hit_value_max = 16
-        self.blackjack_win_ratio = 3.0/2
+        self.dealer_hit_value_max = 16  # Hit on 16, stand on 17
+        self.blackjack_win_ratio = 1.5
 
     def decide_winner(self, blackjack):
-        # game should be Blackjack() instance
+        # blackjack is an object of the class Blackjack()
         # http://www.wikihow.com/Sample/Blackjack-Rules
         dealer_hand = blackjack.dealer.hand
         for player in blackjack.players:
@@ -46,10 +47,10 @@ class BlackjackRules():
         if action == "Split":
             return hand.can_split()
         if action == "Hit":
-            if hand.sum_of_cards() > 21:
+            if hand.sum_of_cards() >= 21:
                 return False
             if hand.is_blackjack():
-                return True  # sic! Allowed, but stupid
+                return False  # Player has to win :P
             else:
                 return True
         if action == "Stand" or action == "Stay":

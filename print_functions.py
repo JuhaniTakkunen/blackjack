@@ -1,3 +1,20 @@
+# Here is a list of functions which can be used to print information to console. Functions are mostly taken from
+# blackjack.py to make the code in that file easier to read. There are still print commands in other files!
+# Known files to have printing properties:
+# - blackjack_ui.py
+# - blackjack_odds.py
+
+
+# main.py
+def print_welcome():
+    print("Welcome to the game of Blackjack!")
+
+
+def print_start_manual():
+    print("Manual game starts...\n")
+
+
+# blackjack.py
 def print_results(players, rounds):
     print("")
     print("--- *** RESULTS *** ---")
@@ -20,6 +37,7 @@ def print_results(players, rounds):
     print("odds are for the house: ", odds, "percent")
     print("wins", total_win_count, "lost", total_lose_count, "tie", total_tie_count)
     print("")
+
 
 def print_busted(player, hand):
     print(" ---- Player", player.name, "busted with", hand.sum_of_cards(), "points. ---- ")

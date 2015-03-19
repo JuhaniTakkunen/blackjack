@@ -1,14 +1,15 @@
 from hand import Hand
+import playbook
 
 
 class Player():
 
-    def __init__(self, name, first_action=None):
+    def __init__(self, name, first_action=None, counting=False):
         self.name = name
         self.money = 1000
         self.bet = 1
         self.hands = {}  # Hand(): Has hand ended (Stay / Over)
-        self.first_action = first_action
+        self.default_first_action = first_action
 
         # counters
         self.round_count = 0
@@ -16,29 +17,25 @@ class Player():
         self.tie_count = 0
         self.lose_count = 0
         self.blackjack_count = 0
+        self.counting = counting
+        self.rulebook = playbook.get_charts()
 
-        # Load rulebook on how to play each the BlackJack in each scenario
-        import csv
-        with open('Blackjack-chart.csv', 'rt', encoding="UTF-8") as csvfile:
-            data = csv.reader(csvfile, delimiter=',')
-            dealercard = next(data, None)
-            rulebook = {}
-            for row in data:
-                handrule = {}
-                for i in range(1, len(dealercard)):
-                    handrule[dealercard[i]] = row[i]
-                rulebook[row[0]] = handrule
-        self.rulebook = rulebook
+    def update_playbook(self):
+        self.rulebook = playbook.get_charts()
 
-    def new_round(self, *ratio):
+    def new_round(self, deck=False):
         self.round_count += 1
+        if self.counting:
+            ratio = deck.get_ratio()
+        else:
+            ratio = 1
         if ratio:
             if ratio > 2:
                 self.bet = int(ratio)
             else:
                 self.bet = 1
         hand = Hand(self.bet)
-        hand.first_action = self.first_action
+        hand.default_first_action = self.default_first_action
         self.hands = {hand: False}
 
     def discard(self, hand):
@@ -95,37 +92,12 @@ class Player():
     def get_hands(self):
         return self.hands
 
-    def move(self, hand, dealer_hand):
-        dealer_ranks = dealer_hand.get_card_ranks(n_cards=1, show_royal=False)
-        player_ranks = hand.get_card_ranks(show_royal=False)
-        if hand.can_split() is True:  # two cards with the same value
-            search_word = str(player_ranks[0]) + ' ' + str(player_ranks[1])  # TODO: invent better variable name (search_word)
-            action = self.rulebook[search_word][str(dealer_ranks[0])]  # csv-file format | TODO: rename rulebook -> playbook
-        elif hand.has_ace() and hand.can_double():  # "soft" double has different odds than "hard"
-            if player_ranks[0] is "A":
-                search_word = str(player_ranks[0]) + ' ' + str(player_ranks[1])
-            else:
-                search_word = str(player_ranks[1]) + ' ' + str(player_ranks[0])
-            action = self.rulebook[search_word][str(dealer_ranks[0])]
+    def move(self, hand, dealer_hand, use_chart=True):
+        import action
+        if use_chart:
+            action = action.action_from_chart(self, hand, dealer_hand)
+            return action
         else:
-            points = hand.sum_of_cards()
-            if points <= 8:
-                points = "8 and under"
-            elif points >= 17:
-                points = "17 and up"
-            else:
-                points = str(points)
+            action = action.action_monte_carlo(hand=hand, dealer_hand=dealer_hand, rounds=100)
+            return action
 
-            try:
-                action = self.rulebook[points][str(dealer_ranks[0])]
-            except TypeError:
-                print("FAIL in class Player function move")
-                print(points, dealer_ranks[0])
-                print("-------")
-                print(self.rulebook)
-
-        if action == "Double" and not hand.can_double():
-            action = "Hit"
-        elif action == "Split" and not hand.can_split():
-            action = "Hit"
-        return action
