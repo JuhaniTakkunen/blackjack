@@ -1,5 +1,5 @@
-def get_charts(book_id="default"):
-        if book_id == "wiki":
+def get_charts(file_id="blackjack_chart.csv", return_odds=False):
+        if file_id == "wiki":
             # Load rulebook on how to play each the BlackJack in each scenario
             import csv
             with open('Blackjack-chart.csv', 'rt', encoding="UTF-8") as csv_file:
@@ -11,22 +11,55 @@ def get_charts(book_id="default"):
                     for i in range(1, len(dealer_card)):
                         hand_action[dealer_card[i]] = row[i]
                     rulebook[row[0]] = hand_action
-        elif book_id == "default":
-            # Load rulebook on how to play each the BlackJack in each scenario
+        else:
+            # LOAD ODDS FROM FILE
             import csv
             import operator
+            file_name = file_id
+            with open(file_name, 'rt', encoding="UTF-8") as csv_file:
+                data = csv.reader(csv_file, skipinitialspace=True, delimiter=',')
+                action_name = next(data, None)  # header (action) names
+                action_name = action_name[2:]  # ignore first two names "Player" and "Dealer"
 
+                # CREATE CHART FROM DATA
+                # - remove duplicates
+                # - order by best odds
+                rulebook_odds = {}
+                for row in data:
+                    player_hand_value = row[0].strip()
+                    dealer_card_value = row[1].strip()
+                    expected_return = row[2:]
+                    odds = dict(zip(action_name, expected_return))
+
+                    for action, value in odds.items():
+                        action = action.strip()
+                        value = value.strip()
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            value = float("NaN")
+
+                        # Remove duplicates - pick the best odds value
+                        key = (player_hand_value, dealer_card_value)
+                        if key in rulebook_odds:
+                            if action in rulebook_odds[key]:
+                                if rulebook_odds[key][action] < value:
+                                    rulebook_odds[key][action] = value
+                                else:
+                                    continue  # new value is worse than the old value -> ignore it
+                            else:
+                                rulebook_odds[key][action] = value
+                        else:
+                            rulebook_odds[key] = {action: value}
+
+            # order actions by odds value
             rulebook = {}
-            for file_name in ['blackjack_chart_hit_stand.csv', 'blackjack_chart_double_split.csv']:
-                with open(file_name, 'rt', encoding="UTF-8") as csv_file:
-                    data = csv.reader(csv_file, skipinitialspace=True, delimiter=',')
-                    action = next(data, None)
-                    action = action[2:]
-                    for row in data:
-                        player_hand_value = row[0]
-                        dealer_card_value = row[1]
-                        expected_return = row[2:]
-                        odds = dict(zip(action, expected_return))
-                        best_action = max(odds.items(), key=operator.itemgetter(1))[0]
-                        rulebook[(player_hand_value.strip(), dealer_card_value.strip())] = best_action.strip()
+            for cards, odds in rulebook_odds.items():
+                if return_odds:
+                    rulebook[cards] = list(odds.values())
+                else:
+                    ordered_actions = []
+                    for action, odd in sorted(odds.items(), reverse=True, key=operator.itemgetter(1)):
+                        ordered_actions.append(action.strip())
+                    rulebook[cards] = ordered_actions
         return rulebook
