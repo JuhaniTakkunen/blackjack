@@ -72,7 +72,7 @@ class BlackjackOddsAll(BlackjackOdds):
                 for self.dealer_card_value in all_cards:
                     for player in self.players:
                         player.set_money(self.start_money)
-                    for _ in range(0, number_of_rounds):
+                    for _ in range(0, number_of_rounds):  # TODO: parallelisation
                         self.start_round()
                     self.print_results_to_file(number_of_rounds)
             elapsed_time = time.time() - start_time
@@ -128,7 +128,7 @@ class BlackjackOddsStandHit(BlackjackOdds):
                     for player in self.players:
                         player.set_money(self.start_money)
                         player.update_playbook()
-                    for _ in range(0, number_of_rounds):
+                    for _ in range(0, number_of_rounds):  # TODO: parallelisation
                         self.start_round()
                     self.print_results_to_file(number_of_rounds)
 
@@ -185,7 +185,7 @@ class BlackjackOddsDoubleSplit(BlackjackOdds):
                 for self.dealer_card_value in all_cards:
                     for player in self.players:
                         player.set_money(self.start_money)
-                    for _ in range(0, number_of_rounds):
+                    for _ in range(0, number_of_rounds):  # TODO: Parallelisation
                         self.start_round()
                     self.print_results_to_file(number_of_rounds)
 

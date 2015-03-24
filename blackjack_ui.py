@@ -4,6 +4,19 @@
 
 
 # functions originally copied from blackjack.py
+def ui_set_bet(players):
+    for player in players:
+                while True:
+                    try:
+                        var = int(input("Set bet for "+player.name+": "))
+                        if var <= 0:
+                            raise ValueError("not a positive number!")
+                        break
+                    except ValueError:
+                        print("ValueError, use a positive integer")
+                player.bet = var
+
+
 def ui_continue_game(game):
     import print_functions
     print_functions.print_round_ended(game)
@@ -17,16 +30,7 @@ def ui_continue_game(game):
         elif var == "n" or var == "N":
             return False
         if var == "change bet":
-            for player in game.players:
-                while True:
-                    try:
-                        var = int(input("Set bet for "+player.name+": "))
-                        if var <= 0:
-                            raise ValueError("not a positive number!")
-                        break
-                    except ValueError:
-                        print("ValueError, use a positive integer")
-                player.bet = var
+            ui_set_bet(game.players)
         else:
             print("Please answer 'y', 'n' or 'change bet'")
 

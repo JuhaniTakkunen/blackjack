@@ -8,7 +8,7 @@ class Player():
         self.name = name
         self.money = 1000
         self.bet = 1
-        self.hands = {}  # Hand(): Has hand ended (Stay / Over)
+        self.hands = {}  # {Hand(): boolean}
         self.default_first_action = first_action
 
         # counters
@@ -27,9 +27,6 @@ class Player():
         self.round_count += 1
         if self.counting:
             ratio = deck.get_ratio()
-        else:
-            ratio = 1
-        if ratio:
             if ratio > 2:
                 self.bet = int(ratio)
             else:

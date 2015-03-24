@@ -13,11 +13,12 @@ class Blackjack(object):
         self.dealer = Dealer()
         self.deck = Deck()
         self.round_count = 0
-        self.manual = manual
+        self.manual = manual  # Manual play = use user interface for actions and betting
         self.rules = BlackjackRules()
 
     def start_game(self, number_of_rounds=0):
         if self.manual:
+            ui_set_bet(self.players)
             while True:
                 continue_game = self.start_round()
                 if not continue_game:

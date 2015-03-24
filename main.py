@@ -30,17 +30,24 @@ if game_type == "specific card":
 
 if game_type == "create charts":
     # Creates a file with all possible hands with odds by action
+
+    # File names (tmp. -files are removed in the end)
     file1_name = 'blackjack_chart.csv'
     file2_name = 'tmp.blackjack_chart_double_split.csv'
+
+    # Create headers
     with open(file1_name, "w") as file_object:
         print("Player,\t\t", "Dealer,\t", "Hit,\t", "Stand", file=file_object)
     with open(file2_name, "w") as file_object:
         print("Player,\t\t", "Dealer,\t", "Double,\t", "Split", file=file_object)
+
+    # Run simulations
     game = BlackjackOddsStandHit(file1_name)
     game.start_game(rounds_count)
     game2 = BlackjackOddsDoubleSplit(file2_name)
     game2.start_game(rounds_count)
 
+    # Print results to a single file
     import playbook
     rulebook_1 = playbook.get_charts(file1_name, return_odds=True)
     rulebook_2 = playbook.get_charts(file2_name, return_odds=True)
@@ -48,7 +55,7 @@ if game_type == "create charts":
     for cards, actions in rulebook_1.items():
         rulebook_final[cards] = actions+rulebook_2[cards]
 
-    with open("tmp.blackjack_chart.csv", "w") as file_object:
+    with open("tmp."+file1_name, "w") as file_object:
         actions = ["Hit", "Stand", "Double", "Split"]
         # HEADER
         print("Player,\t\t", "Dealer,\t", ",\t".join(x for x in actions), file=file_object)
@@ -57,5 +64,9 @@ if game_type == "create charts":
         for cards, values in sorted(rulebook_final.items()):
             print(', \t'.join(cards), ",\t", ",\t".join(format(x, ".3f") for x in values), file=file_object)
 
+    # Update the chart file and remove unnecessary files (tmp. -prefix)
     import shutil
-    shutil.copyfile("tmp.blackjack_chart.csv", file1_name)
+    import os
+    shutil.copyfile(src="tmp."+file1_name, dst=file1_name)
+    os.remove("tmp."+file1_name)
+    os.remove(file2_name)

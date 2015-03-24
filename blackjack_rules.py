@@ -50,7 +50,7 @@ class BlackjackRules():
             if hand.sum_of_cards() >= 21:
                 return False
             if hand.is_blackjack():
-                return False  # Player has to win :P
+                return False  # Player has to win
             else:
                 return True
         if action == "Stand" or action == "Stay":

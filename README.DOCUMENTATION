@@ -164,23 +164,25 @@ default charts are loaded from blackjack_chart_default.csv (pre-created chart fo
 
 Program contains following files:
 
-action.py
-Blackjack-Chart.csv
-blackjack.py
-blackjack_chart.csv
-blackjack_chart_double_split.csv
-blackjack_chart_hit_stand.csv
-blackjack_gui.py
-blackjack_odds.py
-blackjack_rules.py
-blackjack_ui.py
-dealer.py
-deck.py
-hand.py
-main.py
-playbook.py
-player.py
-print_functions.py
-README.DOCUMENTATION
-README.md
-test.dat
+Program files:
+    action.py
+    blackjack.py
+    blackjack_gui.py    (experimental - not in use!)
+    blackjack_odds.py
+    blackjack_rules.py
+    blackjack_ui.py
+    dealer.py
+    deck.py
+    hand.py
+    main.py             (main program)
+    playbook.py
+    player.py
+    print_functions.py
+Data files:
+    blackjack_chart.csv
+    blackjack_chart_default.csv
+    tmp.blackjack_chart.csv                 (runtime only)
+    tmp.blackjack_chart_double_split.csv    (runtime only)
+Documentation:
+    README.DOCUMENTATION
+    README.md
