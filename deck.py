@@ -1,3 +1,7 @@
+# Deck defines the properties and functions, what deck can do
+# - contains of 52 cards
+# - cards can be dealt and shuffled
+# - count cards based on Hi-Lo - strategy described in http://en.wikipedia.org/wiki/Card_counting#Systems
 import itertools
 from random import shuffle
 

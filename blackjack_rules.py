@@ -1,8 +1,6 @@
-
-
+# Class BlackjackRules defines the rules of blackjack, which can vary between casinos
 class BlackjackRules():
-    # Class BlackjackRules defines the rules of blackjack. Blackjack rules have multiple variations, and here we use the
-    # following rules:
+    # Rules:
     # - dealer hits on 16 stands on 17
     # - money returns to player in case of tie
     # - blackjack pays 3:2

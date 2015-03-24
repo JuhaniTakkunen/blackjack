@@ -1,3 +1,5 @@
+# BlackjackOdds (and its subclasses) extend/replace Blackjack() class. Can be used to deal specific cards, multiple
+# times. Name "BlackjackOdds" comes from this property - odds can be calculated using Monte Carlo - method.
 from blackjack import Blackjack
 import time
 

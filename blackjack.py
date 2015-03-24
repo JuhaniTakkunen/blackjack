@@ -1,3 +1,10 @@
+# Main instance for blackjack game. Each instance includes:
+# - players and dealer
+# - decks of cards
+# - blackjack rules
+#
+# Blackjack can be played using start_game() function
+
 from player import Player
 from deck import Deck
 from hand import Hand

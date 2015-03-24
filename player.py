@@ -1,3 +1,11 @@
+# Each Player object can play blackjack and have multiple hands. Player can have properties such as:
+# - money
+# - counters (wins/loses/ties/blackjacks/rounds)
+# - bet size
+# - name
+# - default first action (always try to hit/stand/double/split)
+# - playbook/rulebook (what rules to follow) NOTE: every player can have their own playbook!
+
 from hand import Hand
 import playbook
 

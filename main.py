@@ -1,3 +1,8 @@
+# Main program to run Blackjack simulator. Main program loads user interface, where user can pick game type:
+# - normal (user decides actions)
+# - auto pilot (computer plays n rounds)
+# - specific card (computer plays n rounds with specific cards)
+# - create charts (computer plays all possible hands and creates "cheat" charts)
 from blackjack import Blackjack
 from blackjack_odds import *  # TODO: check what imports we truly need
 from blackjack_ui import *  # all functions with prefix ui_ are in this file

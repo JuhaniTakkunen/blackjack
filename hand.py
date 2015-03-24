@@ -1,3 +1,13 @@
+# In Blackjack dealer and players have a hand of cards - players can even have multiple hands.
+# Hands have at least the following properties:
+# - cards
+# - bet
+# - hand status (pending / ended)
+# - has hand been split (not always allowed to split multiple times)
+#
+# Bets are defined by hand, since a player can have multiple hands.
+
+
 class Hand():
     def __init__(self, bet):  # TODO: bet=None would be better, but needs to be tested before implementing
         self.cards = []

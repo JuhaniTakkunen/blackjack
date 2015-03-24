@@ -1,3 +1,6 @@
+# Blackjack dealer contains following properties:
+# - what cards does dealer have
+# - what action dealer has to make
 from hand import Hand
 
 

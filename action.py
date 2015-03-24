@@ -1,3 +1,4 @@
+# Functions return best action for given hand - either from file or by calculating it using Monte Carlo method.
 def action_from_chart(player, hand, dealer_hand):
     dealer_ranks = dealer_hand.get_card_ranks(n_cards=1, show_royal=False)
     points = hand.sum_of_cards(as_text=True)

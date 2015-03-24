@@ -1,6 +1,6 @@
 # This file contains user interface functions for blackjack game. Functions are in separate file to make code in other
 # files easier to read, but also this way translations and graphical UI can be added later more easily.
-# - Juhani Takkunen, juhani.takkunen@gmail.com 13.3.2015
+# - Juhani Takkunen, juhani.takkunen@gmail.com
 
 
 # functions originally copied from blackjack.py

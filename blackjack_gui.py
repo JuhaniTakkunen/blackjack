@@ -1,6 +1,7 @@
 __author__ = 'Juhani Takkunen'
 from tkinter import *
-# NOT IN USE!!
+# !!! NOT IN USE !!!
+# Experimental class defining Graphical User Interface
 
 class start_gui():
     def __init__(self, root):

@@ -1,3 +1,9 @@
+# Playbook loads "cheat" charts from given file.
+# - if no file is given, default file is used
+# - if no default file is found, default file is loaded from backup file
+# Reason why these two actions are separated is that a new default file is always created when using "create charts"
+
+
 def get_charts(file_id="blackjack_chart.csv", return_odds=False):
     # LOAD ODDS FROM FILE
     import csv
@@ -6,6 +12,7 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
     import shutil
     import print_functions
     if not os.path.isfile(file_id):
+        # No file found, load backup default file
         print_functions.print_default_chart("blackjack_chart_default.csv")
         shutil.copyfile(src="blackjack_chart_default.csv", dst=file_id)
     file_name = file_id
@@ -50,7 +57,7 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
     for cards, odds in rulebook_odds.items():
         if return_odds:
             ordered_odds = []  # ordered alphabetically by actions
-            for action, odd in sorted(odds.items(), reverse=True, key=operator.itemgetter(0)):
+            for action, odd in sorted(odds.items(), reverse=False, key=operator.itemgetter(0)):
                 ordered_odds.append(odd)
             rulebook[cards] = ordered_odds
         else:

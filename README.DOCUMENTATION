@@ -134,11 +134,12 @@ It is good to notice that we use a build in Mersenne Twister as a random number 
 
 Program has a simple user interface, which automatically launches when running main.py. User can then specify what kind
 of simulation he/she wants to run. There are four possibilities:
-
     - auto pilot
     - normal [default]
     - specific card
     - create charts
+
+after which player chooses how many rounds are played (excluding normal game mode).
 
 3.1.1 Auto pilot
 
@@ -162,27 +163,33 @@ default charts are loaded from blackjack_chart_default.csv (pre-created chart fo
 
 3.2 Program structure
 
-Program contains following files:
+Simulator is started from main.py, which initializes the program (using blackjack_ui.py). Main.py then loads game
+instance either from blackjack.py or blackjack_odds.py (extends blackjack.py) and starts simulation (simulation requires
+rest of the class and function files).
 
-Program files:
-    action.py
-    blackjack.py
-    blackjack_gui.py    (experimental - not in use!)
-    blackjack_odds.py
-    blackjack_rules.py
-    blackjack_ui.py
-    dealer.py
-    deck.py
-    hand.py
-    main.py             (main program)
-    playbook.py
-    player.py
-    print_functions.py
-Data files:
-    blackjack_chart.csv
-    blackjack_chart_default.csv
-    tmp.blackjack_chart.csv                 (runtime only)
-    tmp.blackjack_chart_double_split.csv    (runtime only)
-Documentation:
-    README.DOCUMENTATION
-    README.md
+Program contains following files:
+    Program files:
+        FUNCTION FILES:
+            action.py
+            blackjack_ui.py     (user interface)
+            blackjack_gui.py    (experimental - not in use!)
+            print_functions.py
+        PROGRAM RUN CONTROL:
+            main.py             (main program)
+            blackjack.py        (game instance)
+            blackjack_odds.py   (game instance modifiers)
+        CLASSES / OBJECTS:
+            dealer.py
+            deck.py
+            hand.py
+            playbook.py
+            player.py
+            blackjack_rules.py
+    Data files:
+        blackjack_chart.csv
+        blackjack_chart_default.csv
+        tmp.blackjack_chart.csv                 (runtime only)
+        tmp.blackjack_chart_double_split.csv    (runtime only)
+    Documentation:
+        README.DOCUMENTATION
+        README.md
