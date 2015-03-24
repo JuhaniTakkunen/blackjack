@@ -7,6 +7,7 @@ from blackjack import Blackjack
 from blackjack_odds import *  # TODO: check what imports we truly need
 from blackjack_ui import *  # all functions with prefix ui_ are in this file
 from print_functions import *  # all functions with prefix print_ are in this file
+import time
 
 # Main
 print_welcome()
@@ -75,3 +76,4 @@ if game_type == "create charts":
     shutil.copyfile(src="tmp."+file1_name, dst=file1_name)
     os.remove("tmp."+file1_name)
     os.remove(file2_name)
+print(time.strftime("%H:%M:%S"))

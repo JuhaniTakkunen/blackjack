@@ -154,7 +154,7 @@ mode user can also change bet and see what is the current "card count" for count
 
 3.1.3. Specific card
 
-User can test the program and play the game with specific cards only.
+User can test the program and run simulation with specific cards only. Simulation can play n rounds.
 
 3.1.4. Create charts
 
@@ -193,3 +193,11 @@ Program contains following files:
     Documentation:
         README.DOCUMENTATION
         README.md
+
+4. How to use the program
+
+Run the program with command: python3 main.py
+
+After running the program user interface starts to ask what simulations user wants to run (explained in chapter 3.1).
+
+

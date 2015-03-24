@@ -43,7 +43,8 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
                 key = (player_hand_value, dealer_card_value)
                 if key in rulebook_odds:
                     if action in rulebook_odds[key]:
-                        if rulebook_odds[key][action] < value:
+                        import math
+                        if rulebook_odds[key][action] < value or math.isnan(rulebook_odds[key][action]):
                             rulebook_odds[key][action] = value
                         else:
                             continue  # new value is worse than the old value -> ignore it
