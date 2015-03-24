@@ -96,7 +96,7 @@ class BlackjackOddsAll(BlackjackOdds):
 
 class BlackjackOddsStandHit(BlackjackOdds):
     def __init__(self, file_name):
-        players = ["Stand", "Hit"]
+        players = ["Hit", "Stand"]
         Blackjack.__init__(self, players)
         for player in self.players:
             player.default_first_action = player.name

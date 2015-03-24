@@ -18,8 +18,8 @@ Content of this file:
 1. Blackjack - the game
 
 Blackjack is a card game played in casinos worldwide. Players play against the house and try to win money. Players are
-allowed to make decisions during the game changing the winning odds. House always has to make a move determined by the
-rules. The rules of the Blackjack game vary slightly between casinos changing the odds (slightly).
+allowed to make decisions during the game thus changing the winning odds. House always has to make a move determined by
+the rules. The rules of the Blackjack game vary slightly between casinos changing the odds (more or less).
 
 NOTE: Using this program while playing in a casino is most likely illegal - this program is for research purpose only!
 
@@ -37,28 +37,28 @@ This Blackjack simulator uses the following rules:
     - double can be done, if first two cards have a value in range of 9-11
     - player is allowed, if he/she so chooses, hit on 21
 
-For example Casino Helsinki uses different rules (http://www.casinohelsinki.fi/pelit/poytapelit/black-jack) and
-therefore odds are comparable necessary between casinos.
+For example Casino Helsinki uses different rules (http://www.casinohelsinki.fi/pelit/poytapelit/black-jack) and odds are
+not comparable between casinos with different rules.
 
 1.2. Odds
 
-Blackjack odds are based on the question: what is the change that the player/dealer gets certain cards and what will
-happen if the cards is dealt? The problem is that often there are tens of different possibilities what card is dealt and
+Blackjack odds are based on the questions: what is the change that the player/dealer gets certain cards and what will
+happen if that card is dealt? The problem is that often there are tens of different possibilities what card is dealt and
 what can happen.
 
 Blackjack odds can be divided in the next topics:
 
-    - will the player go over + will the player get to a better position
-    - will the house go over
-    - will the house be in better position
+    - will the player go over and/or will the player get to a better position?
+    - will the house go over?
+    - will the house be in better position?
     - what if the player doubles or splits?
 
 1.2.1 Should I hit or stay
 
 When ever the player has 11 points or under he is going to improve his odds and get closer to 21 with no change of going
-over. If the player has over 11 points he/she has to consider the changes that he/she might go over 21 and lose hand.
-For example if the player has 13 points, he would go over with cards of values 9 or 10. Cards going over would then be:
-(9, 10, J, Q, K) and the odds for going over is therefore 5/13 (if we ignore the cards in play).
+over. If the player has over 11 points he/she has to consider the changes that he/she might go over 21 and lose the
+hand. For example: if the player has 13 points, he would go over with cards of values 9 or 10. Cards going over would
+then be: (9, 10, J, Q, K) and the odds for going over is therefore 5/13 (if we ignore the cards in play).
 
 On the other hand, not all cards improve player odds. If the player has 13 points and he gets a card between (A, 2, 3)
 he will stay under 17 points. Player could then continue hitting, but the risk of going over increases. Staying under 17
@@ -70,25 +70,25 @@ odds are as follows:
 - 5/13 player increases odds for winning
 
 The last thing to consider is what position the house is in. If the house has a 10, there is a change of 8/13 that the
-house won't go over on the first round and stays between 17-21 (7, 8, 9, 10, J, Q, K, A) and even if the house gets a
-smaller card (eg. 10, 6) there is still a good change that he won't go over on the next card. Since it is unlikely for
-the house to go over, minor risks can be made to increase the player position. If the house has a smaller card (2-6) it
-is far more likely that the house will go over or stay on 17, and taking the risk for the player to go over is less
-beneficial.
+house stays between 17-21 (7, 8, 9, 10, J, Q, K, A) and therefore does not go over. If the house gets a smaller card
+(eg. 10, 6) there is still a good change that he won't go over on the next card (A, 2, 3, 4, 5 = 5/13). Since it is
+unlikely for the house to go over, minor risks can be made to increase the player position. If the house has a smaller
+card (2-6) it is more likely that the house will go over or stay on 17, and taking the risk for the player to go over is
+less beneficial.
 
 1.2.2 Should I split or double
 
-Splitting is allowed, when player has two cards with the same value. To split player has to double his bet and in result
+Splitting is allowed, when player has two cards of the same value. To split player has to double his bet and as a result
 both the bet and the cards are split into to hands. If the player has eg. (7, 7) with 1 euro bet and the player pays 1
 euro to split, after splitting he has two hands with one card (7) and with a bet of 1 euro. Splitting should be done, if
 the player has advantage after splitting over the dealer. If the dealer has high odds to go over or stay at 17 (eg. 6)
-or the player can split a bad hand to two good hands (A, A), splitting can increase odds. Splitting a good hand (10, 10)
-against dealers good hand (10) can decrease odds.
+or the player can split a bad hand in to two good hands (A, A), splitting can increase odds. Splitting a good hand
+(9, 9) against dealers good hand (10) can decrease odds.
 
-Doubling is more straight forward than splitting - doubling is allowed, when the player has certain points (9-11) with
+Doubling is more straight forward than splitting - doubling is allowed, when the player has specific points (9-11) with
 two cards. If it is likely that the dealer goes over or stays at 17, it is more likely that the player wins, and
 doubling can increase the expected return. After doubling player has to take one card and stay - making the odds
-calculation simpler than with splitting.
+calculation simpler compared to splitting.
 
 1.2.3 Strategy charts
 
@@ -100,15 +100,87 @@ When using a strategy chart such as: http://wizardofodds.com/games/blackjack/app
 rules change even slightly, the chart might be false and all calculations have to be made again. Using a simulation is
 therefore more flexible, especially when counting cards.
 
-
 1.3. Counting
 
-Casinos always create the odds of blackjack so that statistically they win more than they lose. Counting cards can
-improve odds so that (depending on the rules and the method of counting) odds can turn for the player. Typically it is
-not allowed to use any kind of devices in casinos including pen and paper to count cards. Therefore counting systems
-are limited by the memory of the player(s).
+Casinos always create blackjack rules so that statistically they win more than they lose. Counting cards can improve
+odds so that (depending on the rules and the method of counting) odds can turn for the player. Typically it is not
+allowed to use any kind of devices in casinos including pen and paper to count cards - counting cards in your head on
+the other hand is legal. Therefore counting systems are limited by the memory of the player(s).
 
 One of the most common and famous system for counting cards is...
 
 2. Blackjack odds by Monte Carlo
 
+Blackjack odds were calculated by using a monte carlo - method. Each hand was played n times, and for each hand the deck
+was shuffled. A hand consists of two cards for the player and one card for dealer. Even though the dealer is dealt a
+second card in the initial deal, it is hidden and therefore is considered random.
+
+Player always starts with 1000 euros and for each time he/she uses 1 euro bet. After n rounds the change in the players
+money is divided by number of hands (this might differ from if a hand is split), giving the odds for each hand. It is
+possible to create charts to be used when counting cards, but this would require slight changes in the code and
+permutations of the code would increase significantly taking a lot more time.
+
+The output file then consists of the following (numbers are not accurate):
+    Player hand,    Dealer hand,    Hit,    Stand,  Double,     Split
+    Hard 10,        A               0.3     0.2     -1          None
+    Hard 10,        2               0.2     0.1     -1.2        1.2
+    ...
+    Soft 21,        10              0.2     0.2     0.2         0.2
+
+Recommended n for creating charts is 1000, but calculating entire chart with so many rounds can take some time (1-10h).
+It is good to notice that we use a build in Mersenne Twister as a random number generator while dealing cards.
+
+3. How does Blackjack simulator work?
+
+Program has a simple user interface, which automatically launches when running main.py. User can then specify what kind
+of simulation he/she wants to run. There are four possibilities:
+
+    - auto pilot
+    - normal [default]
+    - specific card
+    - create charts
+
+3.1.1 Auto pilot
+
+Auto pilot plays blackjack against the computer and all cards are dealt in random order. Deck is only shuffled if it
+starts to run out. User can also decide to count cards and see if it improves the odds for winning. Actions (hit, stand,
+double, split) are automatically imported from cheat charts - user only sees the end result of n played rounds.
+
+3.1.2. Normal
+
+Normal mode allows user to specify what actions is used. Recommended action is imported from cheat charts. In normal
+mode user can also change bet and see what is the current "card count" for counting cards.
+
+3.1.3. Specific card
+
+User can test the program and play the game with specific cards only.
+
+3.1.4. Create charts
+
+Program needs cheat charts to operate. Player can create the charts manually using n rounds. If charts are not created,
+default charts are loaded from blackjack_chart_default.csv (pre-created chart for 1000 rounds).
+
+3.2 Program structure
+
+Program contains following files:
+
+action.py
+Blackjack-Chart.csv
+blackjack.py
+blackjack_chart.csv
+blackjack_chart_double_split.csv
+blackjack_chart_hit_stand.csv
+blackjack_gui.py
+blackjack_odds.py
+blackjack_rules.py
+blackjack_ui.py
+dealer.py
+deck.py
+hand.py
+main.py
+playbook.py
+player.py
+print_functions.py
+README.DOCUMENTATION
+README.md
+test.dat

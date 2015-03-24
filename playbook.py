@@ -15,6 +15,12 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
             # LOAD ODDS FROM FILE
             import csv
             import operator
+            import os.path
+            import shutil
+            import print_functions
+            if not os.path.isfile(file_id):
+                print_functions.print_default_chart("blackjack_chart_default.csv")
+                shutil.copyfile(src="blackjack_chart_default.csv", dst=file_id)
             file_name = file_id
             with open(file_name, 'rt', encoding="UTF-8") as csv_file:
                 data = csv.reader(csv_file, skipinitialspace=True, delimiter=',')
@@ -56,7 +62,10 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
             rulebook = {}
             for cards, odds in rulebook_odds.items():
                 if return_odds:
-                    rulebook[cards] = list(odds.values())
+                    ordered_odds = []  # ordered alphabetically by actions
+                    for action, odd in sorted(odds.items(), reverse=True, key=operator.itemgetter(0)):
+                        ordered_odds.append(odd)
+                    rulebook[cards] = ordered_odds
                 else:
                     ordered_actions = []
                     for action, odd in sorted(odds.items(), reverse=True, key=operator.itemgetter(1)):

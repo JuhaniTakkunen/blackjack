@@ -68,3 +68,7 @@ def print_player_round_stats(blackjack):
 
 def print_player_turn(player):
     print("\n ---- Player", player.name, "turn! ---- \n")
+
+
+def print_default_chart(file_name):
+    print("Copying default cheat charts from: ", file_name)

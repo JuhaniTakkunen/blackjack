@@ -31,9 +31,9 @@ if game_type == "specific card":
 if game_type == "create charts":
     # Creates a file with all possible hands with odds by action
     file1_name = 'blackjack_chart.csv'
-    file2_name = 'blackjack_chart_double_split.csv'
+    file2_name = 'tmp.blackjack_chart_double_split.csv'
     with open(file1_name, "w") as file_object:
-        print("Player,\t\t", "Dealer,\t", "Stand,\t", "Hit", file=file_object)
+        print("Player,\t\t", "Dealer,\t", "Hit,\t", "Stand", file=file_object)
     with open(file2_name, "w") as file_object:
         print("Player,\t\t", "Dealer,\t", "Double,\t", "Split", file=file_object)
     game = BlackjackOddsStandHit(file1_name)
@@ -48,12 +48,14 @@ if game_type == "create charts":
     for cards, actions in rulebook_1.items():
         rulebook_final[cards] = actions+rulebook_2[cards]
 
-    with open("test.dat", "w") as file_object:
-        print("Player,\t\t", "Dealer,\t", "Stand,\t", "Hit,\t", "Double,\t", "Split,", file=file_object)
-        for cards, values in rulebook_final.items():
-            print(', \t'.join(cards), ",\t", ",\t".join(format(x, ".4f") for x in values), file=file_object)
+    with open("tmp.blackjack_chart.csv", "w") as file_object:
+        actions = ["Hit", "Stand", "Double", "Split"]
+        # HEADER
+        print("Player,\t\t", "Dealer,\t", ",\t".join(x for x in actions), file=file_object)
 
+        # VALUES
+        for cards, values in sorted(rulebook_final.items()):
+            print(', \t'.join(cards), ",\t", ",\t".join(format(x, ".3f") for x in values), file=file_object)
 
-
-
-    # TODO!!! MERGE THE FILES INTO file1_name !!!
+    import shutil
+    shutil.copyfile("tmp.blackjack_chart.csv", file1_name)
