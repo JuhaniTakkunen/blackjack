@@ -73,27 +73,27 @@ class Hand():
 
     def sum_of_cards(self, as_text=False):
         points = 0
-        aces_found = 0
-        prefix = "Hard"
+        ace_count = 0
         for card in self.cards:
             if card.rank in ["J", "Q", "K"]:
                 points += 10
             elif card.rank in ["A"]:
                 points += 11
+                ace_count += 1
                 if points > 21:
                     points -= 10
-                    prefix = "Hard"
-                else:
-                    aces_found += 1
-                    prefix = "Soft"
+                    ace_count -= 1
             else:
                 points += int(card.rank)
 
-            if points > 21 and aces_found > 0:
+            if points > 21 and ace_count > 0:
                 points -= 10
-                aces_found -= 1
-                prefix = "Hard"
+                ace_count -= 1
         if as_text:
+            if ace_count > 0:
+                prefix = "Soft"
+            else:
+                prefix = "Hard"
             return prefix + " " + str(points)
         else:
             return points
@@ -121,6 +121,8 @@ class Hand():
             str(result.append(card.get_rank(show_royals=show_royal)))
         if n_cards is None:
             return result
+        if n_cards == 1:
+            return result[0]
         else:
             return result[0:n_cards]
 

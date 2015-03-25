@@ -37,7 +37,7 @@ def ui_continue_game(game):
 
 def ui_player_action(player, hand, game, default):
     while True:
-        print("Player", player.name, hand.sum_of_cards(), "points: ")
+        print("Player", player.name, hand.sum_of_cards(as_text=True))
         hand.show_cards()
         print("Dealer cards: ")
         game.dealer.hand.show_cards(1)

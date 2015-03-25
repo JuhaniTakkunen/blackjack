@@ -17,11 +17,12 @@ if game_type != "normal":
     rounds_count = ui_get_rounds_count()
 
 if game_type == "auto pilot":
-    name_list = ["John", "Jenni"]
+    name_list = ["Normal", "Counting"]
     game = Blackjack(name_list)
     for player in game.players:
-        ui_get_counting(player)
-    game.start_game(rounds_count)
+        if player.name == "Counting":
+            player.counting = True
+    game.start_game(rounds_count, print_to_screen=True)
 
 if game_type == "normal":
     name_list = ui_get_names()

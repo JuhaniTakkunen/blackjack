@@ -72,3 +72,10 @@ def print_player_turn(player):
 
 def print_default_chart(file_name):
     print("Copying default cheat charts from: ", file_name)
+
+
+def print_round_status(n, players):
+    money = []
+    for player in players:
+        money.append(player.get_money())
+    print(n, money)

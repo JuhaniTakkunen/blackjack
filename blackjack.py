@@ -23,7 +23,7 @@ class Blackjack(object):
         self.manual = manual  # Manual play = use user interface for actions and betting
         self.rules = BlackjackRules()
 
-    def start_game(self, number_of_rounds=0):
+    def start_game(self, number_of_rounds=0, print_to_screen=False):
         if self.manual:
             ui_set_bet(self.players)
             while True:
@@ -31,8 +31,10 @@ class Blackjack(object):
                 if not continue_game:
                     break
         else:
-            for _ in range(0, number_of_rounds):
+            for n in range(0, number_of_rounds):
                 self.start_round()
+                if n % 100 == 0 and print_to_screen:
+                    print_round_status(n, self.players)
         print_results(players=self.players, rounds=self.round_count)
 
     def start_round(self):
@@ -47,8 +49,9 @@ class Blackjack(object):
 
         # Play the game, deal the cards etc.
         self.deal_initial()
+        dealer_rank = self.dealer.get_hand().get_card_ranks(n_cards=1, show_royal=False)
         for player in self.players:
-            self.player_turn(player)
+            self.player_turn(player, dealer_rank)
         self.dealer_turn()
 
         # End game - solve winners, deal money and print what's needed
@@ -67,7 +70,7 @@ class Blackjack(object):
                     self.deck.deal(1, hand)
             self.deck.deal(2, self.dealer.get_hand())
 
-    def player_turn(self, player):
+    def player_turn(self, player, dealer_rank):
         # Default: use playbook/rulebook defined in class Player()
         # Optional: First action can be specified if default playbook/rulebook is not wanted.
         # - allowed terms for first_action: "Split", "Double", "Stay", "Hit"
@@ -83,12 +86,12 @@ class Blackjack(object):
                 # 0. CHECK IF BUSTED
                 if hand.sum_of_cards() >= 21:
                     if self.manual and hand.sum_of_cards() > 21:
-                        print_busted(player, hand)  # TODO: what happens if 21?
+                        print_busted(player, hand)  # TODO: what is printed if 21?
                     if not (hand.default_first_action is not None and len(hand.cards) == 2):  # TODO: handle this better
                         break
 
                 # 1. GET ACTION
-                action = self.get_action(player, hand)
+                action = self.get_action(player, hand, dealer_rank)
 
                 if not action:  # illegal action done in get_action
                     break
@@ -110,11 +113,11 @@ class Blackjack(object):
                 else:
                     raise RuntimeError("Player tried to do illegal action: "+action)
 
-    def get_action(self, player, hand):
+    def get_action(self, player, hand, dealer_rank):
         if len(hand.cards) == 1:  # Happens after split TODO: move this bit of code to when split happens
             action = "Hit"
         elif self.manual:
-            playbook_action = player.move(hand, self.dealer.hand)
+            playbook_action = player.move(hand, dealer_rank)
             action = ui_player_action(player=player, hand=hand, game=self, default=playbook_action)
         elif hand.default_first_action is not None:
             # Use the given action for first round and the playbook after that.
@@ -126,7 +129,7 @@ class Blackjack(object):
                 player.discard(hand)
                 return False
         else:  # Use the default playbook/rulebook
-            action = player.move(hand, self.dealer.hand)
+            action = player.move(hand, dealer_rank)
         return action
 
     def dealer_turn(self):

@@ -20,7 +20,7 @@ class Card:
 
     def get_rank(self, show_royals=True):
         if not show_royals and self.value == 10:
-            return 10
+            return str(10)
         else:
             return self.rank
 
@@ -41,8 +41,8 @@ class Deck:
     def shuffle_new(self, n):
         self.cards = []
         for _ in itertools.repeat(None, n):
-            for card in list(itertools.product(self.ranks, self.suits)):
-                self.cards.append(Card(card[0], card[1]))
+            for rank, suit in list(itertools.product(self.ranks, self.suits)):
+                self.cards.append(Card(rank, suit))
         shuffle(self.cards)  # Mersenne twister
         self.ratio_count = 0
 

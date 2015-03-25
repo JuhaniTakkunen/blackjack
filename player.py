@@ -97,12 +97,12 @@ class Player():
     def get_hands(self):
         return self.hands
 
-    def move(self, hand, dealer_hand, use_chart=True):
+    def move(self, hand, dealer_rank, use_chart=True):
         import action
         if use_chart:
-            action = action.action_from_chart(self, hand, dealer_hand)
+            action = action.action_from_chart(self, hand, dealer_rank)
             return action
-        else:
-            action = action.action_monte_carlo(hand=hand, dealer_hand=dealer_hand, rounds=100)
-            return action
+        # else:
+        #    action = action.action_monte_carlo(hand=hand, dealer_hand=dealer_hand, rounds=100)
+        #    return action
 

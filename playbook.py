@@ -11,6 +11,8 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
     import os.path
     import shutil
     import print_functions
+    import math
+
     if not os.path.isfile(file_id):
         # No file found, load backup default file
         print_functions.print_default_chart("blackjack_chart_default.csv")
@@ -43,7 +45,6 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
                 key = (player_hand_value, dealer_card_value)
                 if key in rulebook_odds:
                     if action in rulebook_odds[key]:
-                        import math
                         if rulebook_odds[key][action] < value or math.isnan(rulebook_odds[key][action]):
                             rulebook_odds[key][action] = value
                         else:
@@ -64,6 +65,7 @@ def get_charts(file_id="blackjack_chart.csv", return_odds=False):
         else:
             ordered_actions = []
             for action, odd in sorted(odds.items(), reverse=True, key=operator.itemgetter(1)):
-                ordered_actions.append(action.strip())
+                if not math.isnan(odd):
+                    ordered_actions.append(action.strip())
             rulebook[cards] = ordered_actions
     return rulebook

@@ -1,4 +1,5 @@
 Blackjack simulator/calculator - course
+Last edited: 25.3.2015
 
 Author: Juhani Takkunen
 E-mail: juhani.takkunen@helsinki.fi / juhani.takkunen@gmail.com
@@ -60,16 +61,16 @@ over. If the player has over 11 points he/she has to consider the changes that h
 hand. For example: if the player has 13 points, he would go over with cards of values 9 or 10. Cards going over would
 then be: (9, 10, J, Q, K) and the odds for going over is therefore 5/13 (if we ignore the cards in play).
 
-On the other hand, not all cards improve player odds. If the player has 13 points and he gets a card between (A, 2, 3)
-he will stay under 17 points. Player could then continue hitting, but the risk of going over increases. Staying under 17
-points is not going to help the player, since the house is never going to stay under 17 and if the player stays on 16,
+On the other hand, not all cards improve player odds. If the player has 13 points and gets a card between (A, 2, 3) he/
+she will stay under 17 points. Player could then continue hitting, but the risk of going over increases. Staying under
+17 points is not going to help the player, since the house is never going to stay under 17 and if the player stays on 16
 the only way to win is by the house going over. Player only benefits from the cards (4, 5, 6, 7, 8) and therefore the
-odds are as follows:
+odds for hitting on "Hard 13" are as follows:
 - 5/13 player lose
 - 3/13 no change in winning odds
 - 5/13 player increases odds for winning
 
-The last thing to consider is what position the house is in. If the house has a 10, there is a change of 8/13 that the
+The second thing to consider is what position the house is in. If the house has a 10, there is a change of 8/13 that the
 house stays between 17-21 (7, 8, 9, 10, J, Q, K, A) and therefore does not go over. If the house gets a smaller card
 (eg. 10, 6) there is still a good change that he won't go over on the next card (A, 2, 3, 4, 5 = 5/13). Since it is
 unlikely for the house to go over, minor risks can be made to increase the player position. If the house has a smaller
@@ -79,11 +80,11 @@ less beneficial.
 1.2.2 Should I split or double
 
 Splitting is allowed, when player has two cards of the same value. To split player has to double his bet and as a result
-both the bet and the cards are split into to hands. If the player has eg. (7, 7) with 1 euro bet and the player pays 1
+both the bet and the cards are split into two hands. If the player has eg. (7, 7) with 1 euro bet and the player pays 1
 euro to split, after splitting he has two hands with one card (7) and with a bet of 1 euro. Splitting should be done, if
-the player has advantage after splitting over the dealer. If the dealer has high odds to go over or stay at 17 (eg. 6)
-or the player can split a bad hand in to two good hands (A, A), splitting can increase odds. Splitting a good hand
-(9, 9) against dealers good hand (10) can decrease odds.
+the player has the advantage after splitting over the dealer. If the dealer has high odds to go over or stay at 17 (eg.
+6) or the player can split a bad hand in to two good hands (A, A), splitting can increase odds. Splitting a good hand
+(9, 9) against dealers good hand (10) can decrease odds and since it costs money, increase the losses.
 
 Doubling is more straight forward than splitting - doubling is allowed, when the player has specific points (9-11) with
 two cards. If it is likely that the dealer goes over or stays at 17, it is more likely that the player wins, and
@@ -92,33 +93,39 @@ calculation simpler compared to splitting.
 
 1.2.3 Strategy charts
 
-To determine whether what action (Split, Stay, Hit or Double) to choose, there are charts which show what is the best
-action to maximize expected return. These can be deterministically calculated using statistics or by using a stochastic
+To determine what action (Split, Stay, Hit or Double) to choose, there are charts that show which  is the best action to
+maximize the expected return. These can be deterministically calculated using statistics or by using a stochastic
 (Monte Carlo) simulation.
 
 When using a strategy chart such as: http://wizardofodds.com/games/blackjack/appendix/1/ the problem is that if the
-rules change even slightly, the chart might be false and all calculations have to be made again. Using a simulation is
+rules change even slightly, the chart might be false and calculations have to be made again. Using a simulation is
 therefore more flexible, especially when counting cards.
 
 1.3. Counting
 
-Casinos always create blackjack rules so that statistically they win more than they lose. Counting cards can improve
+Casinos presumably create blackjack rules so that statistically they win more than they lose. Counting cards can improve
 odds so that (depending on the rules and the method of counting) odds can turn for the player. Typically it is not
-allowed to use any kind of devices in casinos including pen and paper to count cards - counting cards in your head on
-the other hand is legal. Therefore counting systems are limited by the memory of the player(s).
+allowed to use any kind of devices, including pen and paper, in casinos to count cards - counting cards in your head on
+the other hand is legal. Therefore counting systems are limited by the players ability to memorize cards.
 
-One of the most common and famous system for counting cards is...
+One of the most common and famous system for counting cards is Hi-Lo strategy (http://www.wikihow.com/Count-Cards) in
+which the players keep a number in their head to keep track of how many low or high cards have been in play. Each card
+between 2-6 counts as -1 where as 10 and A are considered +1. Other cards (7-9) are considered 0. A deck with high
+positive ratio has more cards with small numbers, which means that there are more low value cards in the deck. Low cards
+tend to make the dealer go over more easily. When the deck is "hot" (high ratio), player should increase his/her bet,
+and with "cold" (low ratio) deck player should decrease the bet. According to wikipedia counting can give over 1%
+advantage over house (depending on rules) http://en.wikipedia.org/wiki/Card_counting#Expected_profit
 
 2. Blackjack odds by Monte Carlo
 
-Blackjack odds were calculated by using a monte carlo - method. Each hand was played n times, and for each hand the deck
-was shuffled. A hand consists of two cards for the player and one card for dealer. Even though the dealer is dealt a
+Blackjack odds are calculated by using a monte carlo - method. Each hand is played n times, and for each hand the deck
+is shuffled. A hand consists of two cards for the player and one card for dealer. Even though the dealer is dealt a
 second card in the initial deal, it is hidden and therefore is considered random.
 
 Player always starts with 1000 euros and for each time he/she uses 1 euro bet. After n rounds the change in the players
 money is divided by number of hands (this might differ from if a hand is split), giving the odds for each hand. It is
 possible to create charts to be used when counting cards, but this would require slight changes in the code and
-permutations of the code would increase significantly taking a lot more time.
+permutations of the code would increase significantly, thus taking a lot more computational time.
 
 The output file then consists of the following (numbers are not accurate):
     Player hand,    Dealer hand,    Hit,    Stand,  Double,     Split
@@ -127,8 +134,9 @@ The output file then consists of the following (numbers are not accurate):
     ...
     Soft 21,        10              0.2     0.2     0.2         0.2
 
-Recommended n for creating charts is 1000, but calculating entire chart with so many rounds can take some time (1-10h).
-It is good to notice that we use a build in Mersenne Twister as a random number generator while dealing cards.
+Recommended n for creating charts is minimum of 1000, but calculating entire chart with so many rounds can take some
+time (1-10h). It is good to notice that we use a build in Mersenne Twister as a random number generator while dealing
+cards.
 
 3. How does Blackjack simulator work?
 
@@ -139,13 +147,17 @@ of simulation he/she wants to run. There are four possibilities:
     - specific card
     - create charts
 
-after which player chooses how many rounds are played (excluding normal game mode).
+after which player chooses how many rounds are played (excluding normal mode).
 
 3.1.1 Auto pilot
 
 Auto pilot plays blackjack against the computer and all cards are dealt in random order. Deck is only shuffled if it
-starts to run out. User can also decide to count cards and see if it improves the odds for winning. Actions (hit, stand,
-double, split) are automatically imported from cheat charts - user only sees the end result of n played rounds.
+starts to run out. Auto pilot has two players: "Normal" and "Counting". Normal player plays typical blackjack with cheat
+charts where as Counting counts cards and if the count is right, bets higher bets. Actions (hit, stand, double, split)
+for both players are automatically imported from cheat charts - user only sees the end result of n played rounds.
+
+Auto pilot also prints player money to console for every 100 rounds - which can be plotted to illustrate 1) the benefit
+of counting cards and b) fluctuation in the money change rate. These results are shown in "result.png".
 
 3.1.2. Normal
 
@@ -154,18 +166,19 @@ mode user can also change bet and see what is the current "card count" for count
 
 3.1.3. Specific card
 
-User can test the program and run simulation with specific cards only. Simulation can play n rounds.
+User can test the program and run simulation with specific cards only. Simulation runs for n rounds.
 
 3.1.4. Create charts
 
-Program needs cheat charts to operate. Player can create the charts manually using n rounds. If charts are not created,
-default charts are loaded from blackjack_chart_default.csv (pre-created chart for 1000 rounds).
+Program needs cheat chart to operate. Player can create the charts manually using n rounds which is stored to
+blackjack_chart.csv. If file does not exist, it will be created. If player would play one of the other game modes while
+blackjack_chart.csv would be missing, file would be copied from blackjack_chart_default.csv, which is pre-created with
+n=3333.
 
 3.2 Program structure
 
 Simulator is started from main.py, which initializes the program (using blackjack_ui.py). Main.py then loads game
-instance either from blackjack.py or blackjack_odds.py (extends blackjack.py) and starts simulation (simulation requires
-rest of the class and function files).
+instance either from blackjack.py or blackjack_odds.py (extends blackjack.py) and starts simulation.
 
 Program contains following files:
     Program files:
@@ -192,7 +205,7 @@ Program contains following files:
         tmp.blackjack_chart_double_split.csv    (runtime only)
     Documentation:
         README.DOCUMENTATION
-        README.md
+        result.png              ("auto pilot" results illustrated in a figure)
 
 4. How to use the program
 
@@ -200,4 +213,28 @@ Run the program with command: python3 main.py
 
 After running the program user interface starts to ask what simulations user wants to run (explained in chapter 3.1).
 
+5. Input and output files
 
+Program has four input/output files:
+        blackjack_chart.csv
+        blackjack_chart_default.csv
+        tmp.blackjack_chart.csv                 (runtime only)
+        tmp.blackjack_chart_double_split.csv    (runtime only)
+
+blackjack_chart.csv is the input file, which is used by playbook.py to determine what action has the best return odds
+for the player. If blackjack_cart.csv is not found, it is created by copying blackjack_chart_default.csv file - file
+created by Juhani Takkunen on 25.3.2015 by running the "create charts" with n = 3333. Running this operation took 2h
+40 min.
+
+Every time main.py is run with command "create charts", results will be printed to blackjack_chart.csv. If one would
+like to use the pre-created odds chart, one can just simply remove current blackjack_chart.csv.
+
+tmp. - files are runtime files, which are necessary when using "create chart" operation. These files are removed
+automatically after the programs successful exit.
+
+6. Possible future development of the blackjack simulator:
+    - implement graphical user interface
+    - improve codes tagged with "TO-DO"
+    - implement parallelization
+    - solve theoretical values and compare results
+    - create proper unit testing
